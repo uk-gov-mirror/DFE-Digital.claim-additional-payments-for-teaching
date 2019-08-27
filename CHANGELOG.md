@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Add contact us page
+
 ## [Release 002] - 2019-08-22
 
 - Record Google Analytics page views immediately after the user accepts
