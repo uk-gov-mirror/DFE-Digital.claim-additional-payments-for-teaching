@@ -111,6 +111,14 @@ RSpec.describe PageSequence do
       expect(PageSequence.new(claim, "claim-school", sequence_version: sequence_version).next_slug).to eq "still-teaching"
     end
 
+    it "returns the slug of an unanswered question if the sequence has skipped one" do
+      expect(PageSequence.new(claim, "claim-school", sequence_version: sequence_version).next_slug).to eq("qts-year")
+    end
+
+    it "returns the slug of an unanswered question if the sequence has reached the end" do
+      expect(PageSequence.new(claim, "check-your-answers", sequence_version: sequence_version).next_slug).to eq("qts-year")
+    end
+
     context "with an ineligible claim" do
       let(:claim) { build(:claim, eligibility: build(:student_loans_eligibility, employment_status: :no_school)) }
 
