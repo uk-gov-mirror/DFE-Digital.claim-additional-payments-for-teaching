@@ -262,14 +262,6 @@ There are a couple of utility classes in the [`lib`](lib) folder under the
 `DfeSignIn` namespace for interacting with DfE Sign-in single sign-on and the
 DfE Sign-in API.
 
-### Application Insights
-
-There is reusable code that enhances the `application_insights` gem to include
-the user IP address as part of the payload data sent to Application Insights in
-[`lib/application_insights`](lib/application_insights). See
-[`config/initializers/application_insights.rb`](config/initializers/application_insights.rb)
-for how to mixin this code to your Rails application.
-
 ### Azure ARM templates
 
 There are some templates that we've abstracted out of our resource group
