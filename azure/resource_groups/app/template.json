@@ -276,7 +276,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(variables('platformBuildingBlocksDeploymentUrlBase'), 'application-insights.json')]",
+          "uri": "[concat(variables('deploymentUrlBase'), 'application-insights.json')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -285,6 +285,9 @@
           },
           "attachedService": {
             "value": "[variables('appServiceName')]"
+          },
+          "disableIpMasking": {
+            "value": true
           }
         }
       }
