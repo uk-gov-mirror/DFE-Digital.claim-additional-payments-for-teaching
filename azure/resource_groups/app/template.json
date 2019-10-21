@@ -334,6 +334,9 @@
           "appServiceAlwaysOn": {
             "value": "[parameters('appServiceAlwaysOn')]"
           },
+          "useAppServiceHostNames": {
+            "value": "[parameters('useAppServiceHostNames')]"
+          },
           "appServiceHostNames": {
             "value": "[if(parameters('useAppServiceHostNames'), parameters('appServiceHostNames'), createArray('PLACEHOLDER'))]"
           },

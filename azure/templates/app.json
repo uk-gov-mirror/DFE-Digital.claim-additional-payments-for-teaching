@@ -29,6 +29,9 @@
     "appServiceAlwaysOn": {
       "type": "bool"
     },
+    "useAppServiceHostNames": {
+      "type": "bool"
+    },
     "appServiceHostNames": {
       "type": "array",
       "defaultValue": ["PLACEHOLDER"],
@@ -179,26 +182,6 @@
           "linuxFxVersion": "[parameters('appServiceRuntimeStack')]",
           "appSettings": "[parameters('appServiceEnvironmentVariables')]"
         }
-      }
-    },
-    {
-      "condition": "[variables('hasCustomHostNames')]",
-      "type": "Microsoft.Web/sites/hostNameBindings",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(variables('appServiceHostNameBindingsNamePrefix'), parameters('appServiceHostNames')[copyIndex()])]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', concat(variables('appServiceCertificateDeploymentNamePrefix'), parameters('appServiceHostNameToCertificateSecretNameIndexMap')[parameters('appServiceHostNames')[copyIndex()]]))]",
-        "[resourceId('Microsoft.Web/sites', parameters('appServiceName'))]"
-      ],
-      "copy": {
-        "name": "[variables('appServiceHostNameBindingsCopyLoopName')]",
-        "count": "[length(parameters('appServiceHostNames'))]",
-        "mode": "Serial"
-      },
-      "properties": {
-        "sslState": "SniEnabled",
-        "thumbprint": "[if(variables('hasCustomHostNames'), reference(resourceId('Microsoft.Resources/deployments', concat(variables('appServiceCertificateDeploymentNamePrefix'), parameters('appServiceHostNameToCertificateSecretNameIndexMap')[parameters('appServiceHostNames')[copyIndex()]]))).outputs.certificateThumbprint.value, 'PLACEHOLDER')]"
       }
     },
     {
