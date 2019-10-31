@@ -29,7 +29,7 @@
   <body class="govuk-template__body">
     <%= javascript_include_tag 'js_check' %>
 
-    <%= render partial: "timeout_dialog" %>
+    <%= render(partial: "timeout_dialog") if current_policy_routing_name  %>
 
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
