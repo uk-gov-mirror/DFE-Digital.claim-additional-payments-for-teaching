@@ -9,6 +9,7 @@
   var warningTimeInMinutes = dialogElement.getAttribute("data-warning-in-minutes");
   var timeoutInMinutes = dialogElement.getAttribute("data-timeout-in-minutes");
   var claimInProgress = dialogElement.getAttribute("data-claim-in-progress");
+  var timeoutPath = dialogElement.getAttribute("data-timeout-path");
   var timeoutInMilliseconds = (timeoutInMinutes - warningTimeInMinutes) * 60 * 1000;
   var dialog = new window.A11yDialog(dialogElement);
 
@@ -34,7 +35,7 @@
 
   function sessionTimedOut() {
     clearInterval(window.sessionTimeoutTimer);
-    window.location = "<%= timeout_claim_path %>";
+    window.location = timeoutPath;
   }
 
   function showTimeoutDialog() {
