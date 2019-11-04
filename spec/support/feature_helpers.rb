@@ -30,7 +30,7 @@ module FeatureHelpers
   end
 
   def start_claim
-    visit new_claim_path
+    visit new_claim_path(StudentLoans.routing_name)
     choose_qts_year
     Claim.order(:created_at).last
   end

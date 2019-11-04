@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   get "refresh-session", to: "sessions#refresh", as: :refresh_session
 
-  scope path: ":policy", defaults: {policy: "student-loans"}, constraints: {policy: %r{student-loans}} do
+  scope path: ":policy", constraints: {policy: %r{student-loans}} do
     # Catch-all for when the service has been placed in maintenance mode.
     if Rails.application.config.maintenance_mode
       match "*path", to: "static_pages#maintenance", via: :all

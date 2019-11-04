@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   def end_expired_claim_sessions
     if claim_session_timed_out?
       clear_claim_session
-      redirect_to timeout_claim_path
+      redirect_to timeout_claim_path(current_policy_routing_name)
     end
   end
 

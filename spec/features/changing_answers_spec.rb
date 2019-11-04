@@ -13,7 +13,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
     new_number = "AB123456C"
 
     expect {
-      find("a[href='#{claim_path("national-insurance-number")}']").click
+      find("a[href='#{claim_path(StudentLoans.routing_name, "national-insurance-number")}']").click
       fill_in "National Insurance number", with: new_number
       click_on "Continue"
     }.to change {
@@ -24,7 +24,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
   end
 
   scenario "Teacher changes their year" do
-    find("a[href='#{claim_path("qts-year")}']").click
+    find("a[href='#{claim_path(StudentLoans.routing_name, "qts-year")}']").click
 
     expect(find("#claim_eligibility_attributes_qts_award_year_on_or_after_september_2013").checked?).to eq(true)
 
@@ -33,12 +33,12 @@ RSpec.feature "Changing the answers on a submittable claim" do
 
     expect(eligibility.reload.qts_award_year).to eq("on_or_after_september_2013")
 
-    expect(current_path).to eq(claim_path("check-your-answers"))
+    expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
   end
 
   context "when changing subjects taught" do
     before do
-      find("a[href='#{claim_path("subjects-taught")}']").click
+      find("a[href='#{claim_path(StudentLoans.routing_name, "subjects-taught")}']").click
     end
 
     scenario "Teacher sees their original choices" do
@@ -62,7 +62,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
       end
 
       scenario "Teacher is redirected to the check your answers page" do
-        expect(current_path).to eq(claim_path("check-your-answers"))
+        expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
       end
     end
   end
@@ -73,7 +73,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
         claim.eligibility.had_leadership_position = true
         claim.save!
 
-        find("a[href='#{claim_path("leadership-position")}']").click
+        find("a[href='#{claim_path(StudentLoans.routing_name, "leadership-position")}']").click
 
         choose "No"
         click_on "Continue"
@@ -88,7 +88,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
       end
 
       scenario "Teacher is redirected to the check your answers page" do
-        expect(current_path).to eq(claim_path("check-your-answers"))
+        expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
       end
     end
 
@@ -97,7 +97,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
         claim.eligibility.had_leadership_position = false
         claim.save!
 
-        find("a[href='#{claim_path("leadership-position")}']").click
+        find("a[href='#{claim_path(StudentLoans.routing_name, "leadership-position")}']").click
 
         choose "Yes"
         click_on "Continue"
@@ -112,7 +112,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
       end
 
       scenario "Teacher is redirected to ask if they were mostly performing leadership duties" do
-        expect(current_path).to eq(claim_path("mostly-performed-leadership-duties"))
+        expect(current_path).to eq(claim_path(StudentLoans.routing_name, "mostly-performed-leadership-duties"))
       end
 
       context "Teacher spent less than half their time performing leadership duties" do
@@ -126,7 +126,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
         end
 
         scenario "Teacher is redirected to the check your answers page" do
-          expect(current_path).to eq(claim_path("check-your-answers"))
+          expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
         end
       end
 
@@ -152,7 +152,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
     let!(:new_claim_school) { create(:school, :student_loan_eligible, name: "Claim School") }
 
     before do
-      find("a[href='#{claim_path("claim-school")}']").click
+      find("a[href='#{claim_path(StudentLoans.routing_name, "claim-school")}']").click
     end
 
     scenario "Teacher sees their original claim school" do
@@ -169,7 +169,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
       end
 
       scenario "Teacher is redirected to the are you still employed screen" do
-        expect(current_path).to eq(claim_path("still-teaching"))
+        expect(current_path).to eq(claim_path(StudentLoans.routing_name, "still-teaching"))
       end
 
       context "When still teaching at the claim school" do
@@ -184,7 +184,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
         end
 
         scenario "Teacher is redirected to the check your answers page" do
-          expect(current_path).to eq(claim_path("check-your-answers"))
+          expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
         end
       end
 
@@ -205,7 +205,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
         end
 
         scenario "Teacher is redirected to the check your answers page" do
-          expect(current_path).to eq(claim_path("check-your-answers"))
+          expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
         end
       end
 
@@ -227,12 +227,12 @@ RSpec.feature "Changing the answers on a submittable claim" do
   end
 
   scenario "changing the are you still employed question (employment_status)" do
-    find("a[href='#{claim_path("still-teaching")}']").click
+    find("a[href='#{claim_path(StudentLoans.routing_name, "still-teaching")}']").click
 
     choose "Yes, at Penistone Grammar School"
     click_on "Continue"
 
-    expect(current_path).to eq(claim_path("check-your-answers"))
+    expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
     expect(eligibility.reload.employment_status).to eq("claim_school")
     expect(eligibility.current_school).to eq(schools(:penistone_grammar_school))
   end
@@ -240,7 +240,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
   scenario "going from same school to different school" do
     eligibility.update!(employment_status: "claim_school")
 
-    find("a[href='#{claim_path("still-teaching")}']").click
+    find("a[href='#{claim_path(StudentLoans.routing_name, "still-teaching")}']").click
 
     choose "Yes, at another school"
     click_on "Continue"
@@ -250,20 +250,20 @@ RSpec.feature "Changing the answers on a submittable claim" do
 
     choose "Hampstead School"
     click_on "Continue"
-    expect(current_path).to eq(claim_path("check-your-answers"))
+    expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
     expect(eligibility.reload.employment_status).to eq("different_school")
     expect(eligibility.current_school).to eq(schools(:hampstead_school))
   end
 
   scenario "changing student loan answer to “No” resets the other student loan-related answers" do
-    visit claim_path("check-your-answers")
+    visit claim_path(StudentLoans.routing_name, "check-your-answers")
 
-    find("a[href='#{claim_path("student-loan")}']").click
+    find("a[href='#{claim_path(StudentLoans.routing_name, "student-loan")}']").click
 
     choose "No"
     click_on "Continue"
 
-    expect(current_path).to eq(claim_path("check-your-answers"))
+    expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
     expect(claim.reload.has_student_loan).to eq false
     expect(claim.student_loan_country).to be_nil
     expect(claim.student_loan_courses).to be_nil
@@ -272,9 +272,9 @@ RSpec.feature "Changing the answers on a submittable claim" do
   end
 
   scenario "changing student loan country forces dependent questions to be re-answered" do
-    visit claim_path("check-your-answers")
+    visit claim_path(StudentLoans.routing_name, "check-your-answers")
 
-    find("a[href='#{claim_path("student-loan-country")}']").click
+    find("a[href='#{claim_path(StudentLoans.routing_name, "student-loan-country")}']").click
 
     choose "Wales"
     click_on "Continue"
@@ -285,7 +285,7 @@ RSpec.feature "Changing the answers on a submittable claim" do
     choose "Before 1 September 2012"
     click_on "Continue"
 
-    expect(current_path).to eq(claim_path("check-your-answers"))
+    expect(current_path).to eq(claim_path(StudentLoans.routing_name, "check-your-answers"))
     expect(claim.reload.has_student_loan).to eq true
     expect(claim.student_loan_country).to eq StudentLoan::WALES
     expect(claim.student_loan_courses).to eq "one_course"
@@ -295,24 +295,24 @@ RSpec.feature "Changing the answers on a submittable claim" do
 
   scenario "user cannot change the value of an identity field that was acquired from Verify" do
     claim.update!(verified_fields: ["payroll_gender"])
-    visit claim_path("check-your-answers")
+    visit claim_path(StudentLoans.routing_name, "check-your-answers")
 
     expect(page).to_not have_content(I18n.t("questions.payroll_gender"))
-    expect(page).to_not have_selector(:css, "a[href='#{claim_path("gender")}']")
+    expect(page).to_not have_selector(:css, "a[href='#{claim_path(StudentLoans.routing_name, "gender")}']")
 
     expect {
-      visit claim_path("gender")
+      visit claim_path(StudentLoans.routing_name, "gender")
     }.to raise_error(ActionController::RoutingError)
   end
 
   scenario "user can change the answer to an identity question that wasn't acquired from Verify" do
     claim.update!(verified_fields: [])
-    visit claim_path("check-your-answers")
+    visit claim_path(StudentLoans.routing_name, "check-your-answers")
 
     expect(page).to have_content(I18n.t("questions.payroll_gender"))
-    expect(page).to have_selector(:css, "a[href='#{claim_path("gender")}']")
+    expect(page).to have_selector(:css, "a[href='#{claim_path(StudentLoans.routing_name, "gender")}']")
 
-    find("a[href='#{claim_path("gender")}']").click
+    find("a[href='#{claim_path(StudentLoans.routing_name, "gender")}']").click
     choose "I don't know"
     click_on "Continue"
 
@@ -322,10 +322,10 @@ RSpec.feature "Changing the answers on a submittable claim" do
   context "when changing the student loan repayment amount" do
     scenario "user can change answer and it preserves two decimal places" do
       claim.eligibility.update!(student_loan_repayment_amount: 100.1)
-      visit claim_path("check-your-answers")
+      visit claim_path(StudentLoans.routing_name, "check-your-answers")
 
       expect(page).to have_content("£100.10")
-      find("a[href='#{claim_path("student-loan-amount")}']").click
+      find("a[href='#{claim_path(StudentLoans.routing_name, "student-loan-amount")}']").click
 
       expect(find("#claim_eligibility_attributes_student_loan_repayment_amount").value).to eq("100.10")
       fill_in I18n.t("student_loans.questions.student_loan_amount", claim_school_name: claim.eligibility.claim_school_name), with: "150.20"

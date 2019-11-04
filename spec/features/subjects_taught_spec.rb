@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "Choosing subjects taught during Teacher Student Loan Repayments claims" do
   before do
     start_claim
-    visit claim_path("subjects-taught")
+    visit claim_path(StudentLoans.routing_name, "subjects-taught")
   end
 
   context "with JS enabled", js: true do
