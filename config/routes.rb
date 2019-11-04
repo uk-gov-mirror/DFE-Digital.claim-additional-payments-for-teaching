@@ -13,15 +13,14 @@ Rails.application.routes.draw do
   # setup a simple healthcheck endpoint for monitoring purposes
   get "/healthcheck", to: proc { [200, {}, ["OK"]] }
 
-  # Catch-all for when the service has been placed in maintenance mode.
-  # Excludes /admin so Service Operators can continue to check claims.
-  if Rails.application.config.maintenance_mode
-    match "*path", to: "static_pages#maintenance", via: :all, constraints: lambda { |req| !%r{^/admin($|/)}.match?(req.path) }
-  end
-
   get "refresh-session", to: "sessions#refresh", as: :refresh_session
 
   scope path: ":policy", defaults: {policy: "student-loans"}, constraints: {policy: %r{student-loans}} do
+    # Catch-all for when the service has been placed in maintenance mode.
+    if Rails.application.config.maintenance_mode
+      match "*path", to: "static_pages#maintenance", via: :all
+    end
+
     constraints slug: %r{#{StudentLoans::SlugSequence::SLUGS.join("|")}} do
       resources :claims, only: [:show, :update], param: :slug, path: "/"
     end
