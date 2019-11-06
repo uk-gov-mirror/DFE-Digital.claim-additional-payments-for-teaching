@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Improve journey for users that worked at more than one school during the claim
+  period
+
 ## [Release 027] - 2019-11-05
 
 - Fixed bug in claim matcher code that would match blank building society roll
