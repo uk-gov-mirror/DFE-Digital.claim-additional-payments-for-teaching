@@ -15,7 +15,14 @@ class StaticPagesController < BasePublicController
   end
 
   def maintenance
-    @availability_message = Rails.configuration.maintenance_mode_availability_message
+    if params[:policy]
+      policy = Policies[params[:policy]]
+      policy_configuration = PolicyConfiguration.find_by(policy_class_name: policy.name)
+      @availability_message = policy_configuration.maintenance_mode_availability_message
+    else
+      @availability_message = Rails.configuration.maintenance_mode_availability_message
+    end
+
     render status: :service_unavailable
   end
 

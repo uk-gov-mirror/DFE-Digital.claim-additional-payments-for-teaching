@@ -21,6 +21,30 @@ Rails.application.routes.draw do
 
   get "refresh-session", to: "sessions#refresh", as: :refresh_session
 
+  class RestrictToMaintenanceMode
+    attr_reader :policy
+
+    def initialize(policy)
+      @policy = policy
+    end
+
+    def matches?(request)
+      return false unless request["policy"] == policy.routing_name
+
+      policy_configuration = PolicyConfiguration.find_by(policy_class_name: policy.name)
+      policy_configuration.maintenance_mode?
+    end
+  end
+
+  # Define routes which are active when a policy is in maintenance mode
+  Policies.all.each do |policy|
+    constraints(RestrictToMaintenanceMode.new(policy)) do
+      scope path: ":policy" do
+        match "*path", to: "static_pages#maintenance", via: :all
+      end
+    end
+  end
+
   # Used to constrain claim journey routing so only slugs
   # that are part of a policy’s slug sequence are routed.
   class RestrictToSequenceSlugs
