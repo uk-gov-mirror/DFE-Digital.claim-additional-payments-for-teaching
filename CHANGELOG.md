@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Remove the global maintenance mode, now that we can put individual services
+  into maintenance mode
 - A service operator can put an individual service into maintenance mode from
   the admin interface
 
