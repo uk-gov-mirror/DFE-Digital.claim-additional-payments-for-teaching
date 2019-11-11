@@ -1,0 +1,56 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">
+      <span class="govuk-caption-xl">Maintenance</span>
+      <%= policy_service_name(@policy_configuration.policy.routing_name) %>
+    </h1>
+
+    <!-- TODO sort out styling: http://alphagov.github.io/digitalmarketplace-frontend-toolkit/temporary-message.html (see Miro thread. the GOV.UK Design System "alerts" component on GH also discusses these sorts of messages -->
+    <div class="govuk-panel govuk-panel--informational">
+      <% if @policy_configuration.maintenance_mode? %>
+        <h3 class="govuk-panel__title">Service closed</h3>
+        <p class="govuk-panel__body">This service is currently closed. Users can not submit claims.</p>
+      <% else %>
+        <h3 class="govuk-panel__title">Service open</h3>
+        <p class="govuk-panel__body">This service is currently open. Users can submit claims.</p>
+      <% end %>
+    </div>
+
+    <%= form_with model: [:admin, @policy_configuration] do |f| %>
+      <div class="govuk-form-group">
+        <%= f.label :maintenance_mode_availability_message, "Availability message", class: "govuk-label" %>
+        <span class="govuk-hint">
+          <p>
+          This is an optional message that should provide an explanation of why the service is closed and / or when we expect it to open again.
+          </p>
+
+          <p>
+          For example, "The service is closed for maintenance and will be available from 2pm today."
+          </p>
+        </span>
+        <%= f.text_area :maintenance_mode_availability_message, class: "govuk-textarea", rows: 5 %>
+      </div>
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend">
+            <!-- TODO should there be govuk-fieldset__heading? -->
+            Service status
+          </legend>
+          <div class="govuk-radios">
+            <div class="govuk-radios__item">
+              <%= radio_button_tag :maintenance_mode, "0", !@policy_configuration.maintenance_mode?, name: "policy_configuration[maintenance_mode]", id: "policy_configuration_maintenance_mode_false", class: "govuk-radios__input" %>
+              <%= f.label :maintenance_mode_false, "Open", class: "govuk-label govuk-radios__label" %>
+            </div>
+            <div class="govuk-radios__item">
+              <%= radio_button_tag :maintenance_mode, "1", @policy_configuration.maintenance_mode?, name: "policy_configuration[maintenance_mode]", id: "policy_configuration_maintenance_mode_true", class: "govuk-radios__input" %>
+              <%= f.label :maintenance_mode_true, "Closed", class: "govuk-label govuk-radios__label" %>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <%= f.submit "Save", class: "govuk-button", data: { module: "govuk-button" } %>
+    <% end %>
+  </div>
+</div>
