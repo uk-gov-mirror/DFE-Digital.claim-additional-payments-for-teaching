@@ -29,6 +29,7 @@
           </p>
         </span>
         <%= f.text_area :maintenance_mode_availability_message, class: "govuk-textarea", rows: 5 %>
+        <%= f.submit "Preview message", formaction: admin_policy_configuration_preview_path(@policy_configuration), formmethod: "get", formtarget: "_blank", class: "govuk-button govuk-button--secondary", data: { disable_with: false } %>
       </div>
 
       <div class="govuk-form-group">
@@ -50,7 +51,8 @@
         </fieldset>
       </div>
 
-      <%= f.submit "Save", class: "govuk-button", data: { module: "govuk-button" } %>
+      <%# This is to prevent the submit from being disabled when we press the preview button. It's not a good solution. %>
+      <%= f.submit "Save", class: "govuk-button", data: { module: "govuk-button", disable_with: false } %>
     <% end %>
   </div>
 </div>

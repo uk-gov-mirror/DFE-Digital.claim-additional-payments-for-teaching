@@ -115,6 +115,8 @@ Rails.application.routes.draw do
       resources :payment_confirmation_report_uploads, only: [:new, :create]
     end
 
-    resources :policy_configurations, only: [:index, :edit, :update]
+    resources :policy_configurations, only: [:index, :edit, :update] do
+      get "preview"
+    end
   end
 end
