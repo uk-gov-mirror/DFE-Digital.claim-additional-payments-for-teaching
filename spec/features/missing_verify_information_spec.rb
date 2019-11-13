@@ -41,7 +41,7 @@ RSpec.feature "Missing information from GOV.UK Verify" do
     click_on "Continue"
 
     freeze_time do
-      perform_enqueued_jobs do
+      perform_enqueued_jobs(except: RecordSubmittedClaimJob) do
         expect {
           click_on "Confirm and send"
         }.to change { ActionMailer::Base.deliveries.count }.by(1)
@@ -96,7 +96,7 @@ RSpec.feature "Missing information from GOV.UK Verify" do
     click_on "Continue"
 
     freeze_time do
-      perform_enqueued_jobs do
+      perform_enqueued_jobs(except: RecordSubmittedClaimJob) do
         expect {
           click_on "Confirm and send"
         }.to change { ActionMailer::Base.deliveries.count }.by(1)

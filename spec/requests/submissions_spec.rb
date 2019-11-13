@@ -3,9 +3,14 @@ require "rails_helper"
 RSpec.describe "Submissions", type: :request do
   describe "#create" do
     let(:in_progress_claim) { Claim.order(:created_at).last }
+    let(:geckoboard_client) { double("Geckoboard::Client") }
+    let(:geckoboard_dataset) { double("Geckoboard::Dataset", post: nil) }
 
     context "with a submittable claim" do
       before do
+        allow_any_instance_of(RecordSubmittedClaimJob).to receive(:client) { geckoboard_client }
+        allow(geckoboard_client).to receive_message_chain(:datasets, :find_or_create) { geckoboard_dataset }
+
         start_claim
         # Make the claim submittable
         in_progress_claim.update!(attributes_for(:claim, :submittable))
@@ -23,6 +28,16 @@ RSpec.describe "Submissions", type: :request do
         expect(email.to).to eql([in_progress_claim.email_address])
         expect(email.subject).to eql("Your claim was received")
         expect(email.body).to include("Your unique reference is #{in_progress_claim.reference}.")
+      end
+
+      it "records the data in Geckoboard" do
+        expect(geckoboard_dataset).to have_received(:post).with([
+          {
+            reference: in_progress_claim.reload.reference,
+            policy: in_progress_claim.policy.to_s,
+            submitted_at: in_progress_claim.submitted_at,
+          },
+        ])
       end
     end
 
