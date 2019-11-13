@@ -82,6 +82,8 @@ RSpec.feature "Payroll" do
     file.rewind
 
     attach_file("Upload a Payment Confirmation Report CSV file", file.path)
+    expect(RecordPaidClaimJob).to receive(:perform_later).twice
+
     perform_enqueued_jobs { click_on "Upload file" }
 
     expect(page).to have_content("Payment Confirmation Report successfully uploaded")

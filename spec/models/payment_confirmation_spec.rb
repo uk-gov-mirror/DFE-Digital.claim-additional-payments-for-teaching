@@ -48,7 +48,7 @@ RSpec.describe PaymentConfirmation do
       a_tuesday = Date.parse("2019-01-01")
       the_following_friday = "4 January 2019"
       travel_to a_tuesday do
-        perform_enqueued_jobs do
+        perform_enqueued_jobs(except: RecordPaidClaimJob) do
           payment_confirmation.ingest
         end
 
@@ -63,6 +63,10 @@ RSpec.describe PaymentConfirmation do
         expect(first_email.body.raw_source).to include(the_following_friday)
         expect(second_email.body.raw_source).to include(the_following_friday)
       end
+    end
+
+    it "enqueues jobs to send data to Geckoboard" do
+      expect { payment_confirmation.ingest }.to have_enqueued_job(RecordPaidClaimJob).twice
     end
   end
 

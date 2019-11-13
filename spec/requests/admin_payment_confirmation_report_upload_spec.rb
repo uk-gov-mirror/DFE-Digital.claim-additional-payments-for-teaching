@@ -21,6 +21,7 @@ RSpec.describe "Admin Payment Confirmation Report upload" do
       let(:file) { Rack::Test::UploadedFile.new(StringIO.new(csv), "text/csv", original_filename: "payments.csv") }
 
       context "the claims in the CSV match the claims of the payroll run" do
+        let(:updated_at) { Time.zone.parse("2019-01-01") }
         let(:payroll_run) { create(:payroll_run, claims_count: 2) }
         let(:csv) do
           <<~CSV
@@ -30,11 +31,19 @@ RSpec.describe "Admin Payment Confirmation Report upload" do
           CSV
         end
 
-        it "records the values from the CSV against the claims' payments and sends emails" do
+        before do
+          @claim_events = []
+          payroll_run.claims.each_with_index do |claim, i|
+            @claim_events[i] = double("RecordClaimEvent", perform: nil)
+            expect(RecordClaimEvent).to receive(:new).with(claim, :paid, an_instance_of(ActiveSupport::TimeWithZone)) { @claim_events[i] }
+          end
+
           perform_enqueued_jobs do
             post admin_payroll_run_payment_confirmation_report_uploads_path(payroll_run), params: {file: file}
           end
+        end
 
+        it "records the values from the CSV against the claims' payments and sends emails" do
           expect(response).to redirect_to(admin_payroll_runs_path)
 
           expect(payroll_run.claims[0].reload.payment.payroll_reference).to eq("DFE00001")
@@ -43,6 +52,12 @@ RSpec.describe "Admin Payment Confirmation Report upload" do
           expect(payroll_run.reload.confirmation_report_uploaded_by).to eq(admin_session_id)
 
           expect(ActionMailer::Base.deliveries.count).to eq(2)
+        end
+
+        it "sends the events to Geckoboard" do
+          payroll_run.claims.each_with_index do |claim, i|
+            expect(@claim_events[i]).to have_received(:perform)
+          end
         end
       end
 
