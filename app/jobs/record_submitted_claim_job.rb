@@ -22,7 +22,7 @@ class RecordSubmittedClaimJob < ApplicationJob
   end
 
   def dataset_name
-    "claims.submitted.#{ENV["ROLLBAR_ENV"]}"
+    "claims.submitted.#{ENV["ENVIRONMENT_NAME"]}"
   end
 
   def fields

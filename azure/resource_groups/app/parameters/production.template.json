@@ -161,7 +161,7 @@
         "secretName": "RollbarAccessToken"
       }
     },
-    "ROLLBAR_ENV": {
+    "ENVIRONMENT_NAME": {
       "value": "production"
     },
     "VSP.VERIFY_ENVIRONMENT": {

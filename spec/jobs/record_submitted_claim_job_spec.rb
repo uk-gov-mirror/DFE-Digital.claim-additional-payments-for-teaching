@@ -29,7 +29,7 @@ RSpec.describe RecordSubmittedClaimJob do
   end
 
   it "has the right dataset name" do
-    ClimateControl.modify ROLLBAR_ENV: "test" do
+    ClimateControl.modify ENVIRONMENT_NAME: "test" do
       expect(subject.dataset_name).to eq("claims.submitted.test")
     end
   end
