@@ -8,7 +8,7 @@ RSpec.describe "Submissions", type: :request do
 
     context "with a submittable claim" do
       before do
-        allow_any_instance_of(RecordSubmittedClaimJob).to receive(:client) { geckoboard_client }
+        allow_any_instance_of(RecordClaimEvent).to receive(:client) { geckoboard_client }
         allow(geckoboard_client).to receive_message_chain(:datasets, :find_or_create) { geckoboard_dataset }
 
         start_claim
@@ -35,7 +35,7 @@ RSpec.describe "Submissions", type: :request do
           {
             reference: in_progress_claim.reload.reference,
             policy: in_progress_claim.policy.to_s,
-            submitted_at: in_progress_claim.submitted_at,
+            performed_at: in_progress_claim.submitted_at,
           },
         ])
       end
