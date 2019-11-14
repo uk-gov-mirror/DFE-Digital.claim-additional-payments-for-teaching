@@ -1,6 +1,15 @@
 require "rails_helper"
 
 RSpec.feature "Teacher Student Loan Repayments claims" do
+  let(:geckoboard_client) { double("Geckoboard::Client") }
+  let(:geckoboard_dataset) { double("Geckoboard::Dataset", post: nil, put: nil) }
+
+  before do
+    allow_any_instance_of(RecordClaimEvent).to receive(:client) { geckoboard_client }
+    allow_any_instance_of(UpdateClaimCheckStats).to receive(:client) { geckoboard_client }
+    allow(geckoboard_client).to receive_message_chain(:datasets, :find_or_create) { geckoboard_dataset }
+  end
+
   [
     true,
     false,
@@ -113,13 +122,32 @@ RSpec.feature "Teacher Student Loan Repayments claims" do
       expect(page).to have_text("Check your answers before sending your application")
 
       freeze_time do
-        perform_enqueued_jobs(except: RecordSubmittedClaimJob) do
+        perform_enqueued_jobs do
           expect {
             click_on "Confirm and send"
           }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
 
         expect(claim.reload.submitted_at).to eq(Time.zone.now)
+
+        expect(geckoboard_dataset).to have_received(:post).with([
+          {
+            reference: claim.reload.reference,
+            policy: claim.policy.to_s,
+            performed_at: claim.submitted_at,
+          },
+        ])
+
+        expect(geckoboard_dataset).to have_received(:put).with([
+          {
+            metric: "AwaitingChecking",
+            count: 1,
+          },
+          {
+            metric: "PassedCheckDeadline",
+            count: 0,
+          },
+        ])
       end
 
       expect(page).to have_text("Claim submitted")

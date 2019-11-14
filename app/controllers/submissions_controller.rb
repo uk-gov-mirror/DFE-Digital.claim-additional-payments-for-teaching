@@ -5,6 +5,7 @@ class SubmissionsController < BasePublicController
     if current_claim.submit!
       ClaimMailer.submitted(current_claim).deliver_later
       RecordSubmittedClaimJob.perform_later(current_claim)
+      UpdateClaimCheckStatsJob.perform_later
       redirect_to claim_confirmation_path
     else
       render "claims/check_your_answers"

@@ -4,11 +4,13 @@ RSpec.describe "Submissions", type: :request do
   describe "#create" do
     let(:in_progress_claim) { Claim.order(:created_at).last }
     let(:geckoboard_client) { double("Geckoboard::Client") }
-    let(:geckoboard_dataset) { double("Geckoboard::Dataset", post: nil) }
+    let(:geckoboard_dataset) { double("Geckoboard::Dataset", post: nil, put: nil) }
 
     context "with a submittable claim" do
       before do
         allow_any_instance_of(RecordClaimEvent).to receive(:client) { geckoboard_client }
+        allow_any_instance_of(UpdateClaimCheckStats).to receive(:client) { geckoboard_client }
+
         allow(geckoboard_client).to receive_message_chain(:datasets, :find_or_create) { geckoboard_dataset }
 
         start_claim
@@ -36,6 +38,19 @@ RSpec.describe "Submissions", type: :request do
             reference: in_progress_claim.reload.reference,
             policy: in_progress_claim.policy.to_s,
             performed_at: in_progress_claim.submitted_at,
+          },
+        ])
+      end
+
+      it "records the approval stats in Geckoboard" do
+        expect(geckoboard_dataset).to have_received(:put).with([
+          {
+            metric: "AwaitingChecking",
+            count: 1,
+          },
+          {
+            metric: "PassedCheckDeadline",
+            count: 0,
           },
         ])
       end
