@@ -8,6 +8,7 @@ class Admin::ClaimChecksController < Admin::BaseAdminController
     @check = @claim.build_check(check_params.merge(checked_by: admin_session.user_id))
     if @check.save
       send_claim_result_email
+      UpdateClaimCheckStatsJob.perform_later
       redirect_to admin_claims_path, notice: "Claim has been #{@claim.check.result} successfully"
     else
       render "admin/claims/show"

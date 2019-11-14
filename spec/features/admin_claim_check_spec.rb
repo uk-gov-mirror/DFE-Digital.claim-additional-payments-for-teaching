@@ -4,7 +4,13 @@ RSpec.feature "Admin checks a claim" do
   let(:user_id) { "userid-345" }
 
   context "User is logged in as a service operator" do
+    let(:geckoboard_client) { double("Geckoboard::Client") }
+    let(:geckoboard_dataset) { double("Geckoboard::Dataset", post: nil, put: nil) }
+
     before do
+      allow_any_instance_of(UpdateClaimCheckStats).to receive(:client) { geckoboard_client }
+      allow(geckoboard_client).to receive_message_chain(:datasets, :find_or_create) { geckoboard_dataset }
+
       sign_in_to_admin_with_role(AdminSession::SERVICE_OPERATOR_DFE_SIGN_IN_ROLE_CODE, user_id)
     end
 
@@ -36,6 +42,17 @@ RSpec.feature "Admin checks a claim" do
         expect(mail.subject).to match("been approved")
         expect(mail.to).to eq([claim_to_approve.email_address])
         expect(mail.body.raw_source).to match("been approved")
+
+        expect(geckoboard_dataset).to have_received(:put).with([
+          {
+            metric: "AwaitingChecking",
+            count: 4,
+          },
+          {
+            metric: "PassedCheckDeadline",
+            count: 0,
+          },
+        ])
       end
     end
 
@@ -64,6 +81,17 @@ RSpec.feature "Admin checks a claim" do
       expect(mail.subject).to match("been rejected")
       expect(mail.to).to eq([claim_to_reject.email_address])
       expect(mail.body.raw_source).to match("been rejected.")
+
+      expect(geckoboard_dataset).to have_received(:put).with([
+        {
+          metric: "AwaitingChecking",
+          count: 4,
+        },
+        {
+          metric: "PassedCheckDeadline",
+          count: 0,
+        },
+      ])
     end
 
     scenario "User can see existing check details" do
