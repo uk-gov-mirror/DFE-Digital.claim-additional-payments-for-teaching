@@ -30,6 +30,11 @@ FactoryBot.define do
       reference { Reference.new.to_s }
     end
 
+    trait :submitted_and_past_deadline do
+      submittable
+      submitted_at { Claim::CHECK_DEADLINE.ago - 1.week }
+    end
+
     trait :approved do
       submitted
       association(:check, factory: [:check, :approved], strategy: :build)
