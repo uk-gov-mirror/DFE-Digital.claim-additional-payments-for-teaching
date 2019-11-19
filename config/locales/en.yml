@@ -133,3 +133,13 @@ en:
       mostly_performed_leadership_duties: "Mostly performed leadership duties?"
       student_loan_repayment_amount: "Student loan repayment amount"
       student_loan_repayment_plan: "Student loan repayment plan"
+    emails:
+      submitted:
+        subject: "Your claim was received"
+      approved:
+        subject: "Your claim to get your student loan repayments back has been approved, reference number: %{reference}"
+      rejected:
+        subject:  "Your claim to get your student loan repayments back has been rejected, reference number: %{reference}"
+      payment_confirmation:
+        subject: "We’re paying your claim to get back your student loan repayments, reference number: %{reference}"
+
