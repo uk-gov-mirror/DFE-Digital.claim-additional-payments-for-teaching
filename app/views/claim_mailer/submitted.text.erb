@@ -1,6 +1,6 @@
 Dear <%= @display_name %>,
 
-We've received your application to claim back your student loan repayments for the time you spent at <%= @claim.eligibility.claim_school.name %>.
+<%= opening_line(@claim, school_name: @claim.eligibility.claim_school.name) %>
 
 Your unique reference is <%= @claim.reference %>. You will need this if you contact us about your claim.
 

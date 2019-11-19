@@ -1,5 +1,6 @@
 class ClaimMailer < Mail::Notify::Mailer
   helper :application
+  helper_method :opening_line
 
   def submitted(claim)
     view_mail_with_claim(claim)
@@ -36,8 +37,16 @@ class ClaimMailer < Mail::Notify::Mailer
   end
 
   def subject_line(claim)
-    policy_name = claim.policy.to_s.underscore
-    translation_string = "#{policy_name}.emails.#{action_name}.subject"
+    translation_string = "#{policy_name(claim)}.emails.#{action_name}.subject"
     I18n.t(translation_string, reference: claim.reference)
+  end
+
+  def opening_line(claim, attrs = {})
+    translation_string = "#{policy_name(claim)}.emails.#{action_name}.opening_line"
+    I18n.t(translation_string, attrs)
+  end
+
+  def policy_name(claim)
+    claim.policy.to_s.underscore
   end
 end

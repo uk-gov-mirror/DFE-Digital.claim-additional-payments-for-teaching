@@ -136,10 +136,13 @@ en:
     emails:
       submitted:
         subject: "Your claim was received"
+        opening_line: "We've received your application to claim back your student loan repayments for the time you spent at %{school_name}."
       approved:
         subject: "Your claim to get your student loan repayments back has been approved, reference number: %{reference}"
+        opening_line: "Your claim to get your student loan repayments back has been approved."
       rejected:
         subject:  "Your claim to get your student loan repayments back has been rejected, reference number: %{reference}"
+        opening_line: "Unfortunately your claim to get your student loan payments back has been rejected."
       payment_confirmation:
         subject: "We’re paying your claim to get back your student loan repayments, reference number: %{reference}"
-
+        opening_line: "We’re paying your claim to get back the student loan repayments you made while employed as a teacher during the last financial year, claim reference: %{reference}."
