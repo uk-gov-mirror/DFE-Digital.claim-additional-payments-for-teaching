@@ -67,7 +67,7 @@ RSpec.describe ClaimMailer, type: :mailer do
       end
 
       describe "#payment_confirmation" do
-        let(:payment) { build(:payment, :with_figures, net_pay: 500.00, student_loan_repayment: 60, claim: claim) }
+        let(:payment) { build(:payment, :with_figures, net_pay: 500.00, student_loan_repayment: 60, claims: [claim]) }
         let(:claim) { build(:claim, :submitted, policy: policy) }
         let(:payment_date_timestamp) { Time.new(2019, 1, 1).to_i }
         let(:mail) { ClaimMailer.payment_confirmation(payment.claim, payment_date_timestamp) }
@@ -84,7 +84,7 @@ RSpec.describe ClaimMailer, type: :mailer do
         end
 
         context "when user does not currently have a student loan" do
-          let(:payment) { build(:payment, :with_figures, student_loan_repayment: nil, claim: claim) }
+          let(:payment) { build(:payment, :with_figures, student_loan_repayment: nil, claims: [claim]) }
 
           it "does not mention the content relating to student loan deductions" do
             expect(mail.body.encoded).to_not include("student loan contribution")
@@ -92,7 +92,7 @@ RSpec.describe ClaimMailer, type: :mailer do
         end
 
         context "when user has a student loan" do
-          let(:payment) { build(:payment, :with_figures, student_loan_repayment: 10, claim: claim) }
+          let(:payment) { build(:payment, :with_figures, student_loan_repayment: 10, claims: [claim]) }
 
           it "mentions the student loan deduction content and lists their contribution" do
             expect(mail.body.encoded).to include("This payment is treated as pay and is therefore subject to a student loan contribution, if applicable.")
