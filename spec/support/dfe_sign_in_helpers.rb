@@ -90,4 +90,50 @@ module DfeSignInHelpers
     stub_request(:get, "#{api_base_url}/services/#{api_client_id}/organisations/#{organisation_id}/users/#{user_id}")
       .to_return(status: 200, body: api_response)
   end
+
+  def stub_dfe_sign_in_user_list_request(number_of_pages: 1, page_number: nil)
+    url = "#{DfeSignIn.configuration.base_url}/users"
+    url = "#{url}?page=#{page_number}" if page_number
+
+    response = {
+      "users" => [
+        {
+          "organisation" => {
+            "id" => "5b0e38fc-1db7-11ea-978f-2e728ce88125",
+            "name" => "ACME Inc",
+          },
+          "userId" => "5b0e3686-1db7-11ea-978f-2e728ce88125",
+          "email" => "alice@example.com",
+          "familyName" => "Example",
+          "givenName" => "Alice",
+        },
+        {
+          "organisation" => {
+            "id" => "5b0e3bcc-1db7-11ea-978f-2e728ce88125",
+            "name" => "ACME Inc",
+          },
+          "userId" => "5b0e3a78-1db7-11ea-978f-2e728ce88125",
+          "email" => "bob@example.com",
+          "familyName" => "Example",
+          "givenName" => "Bob",
+        },
+        {
+          "organisation" => {
+            "id" => "5b0e3bcc-1db7-11ea-978f-2e728ce88125",
+            "name" => "ACME Inc",
+          },
+          "userId" => "5b0e3d20-1db7-11ea-978f-2e728ce88125",
+          "email" => "eve@example.com",
+          "familyName" => "Example",
+          "givenName" => "Eve",
+        },
+      ],
+      "numberOfRecords" => 3,
+      "page" => 1,
+      "numberOfPages" => number_of_pages,
+    }.to_json
+
+    stub_request(:get, url)
+      .to_return(body: response, status: 200)
+  end
 end
