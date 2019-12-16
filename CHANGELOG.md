@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog]
 - Don't match bank account sort code when identifying potentially similar claims
 - Alternative provisions schools and special schools that teach students who are
   over 11 are eligible
+- Import users from DfE Signin to the local database
 
 ## [Release 040] - 2019-12-09
 
