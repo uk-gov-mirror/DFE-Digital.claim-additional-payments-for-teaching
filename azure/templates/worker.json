@@ -35,6 +35,11 @@
             "name": "[parameters('containerName')]",
             "properties": {
               "image": "[parameters('imageName')]",
+              "ports": [
+                {
+                  "port": "3000"
+                }
+              ],
               "resources": {
                 "requests": {
                   "cpu": 1,
@@ -46,8 +51,17 @@
             }
           }
         ],
+        "ipAddress": {
+          "ports": [
+            {
+              "protocol": "TCP",
+              "port": 3000
+            }
+          ],
+          "type": "Public"
+        },
         "restartPolicy": "Always",
-        "osType": "Linux",
+        "osType": "Linux"
       }
     }
   ],
