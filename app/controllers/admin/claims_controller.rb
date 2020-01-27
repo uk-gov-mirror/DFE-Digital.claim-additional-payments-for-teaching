@@ -18,6 +18,9 @@ class Admin::ClaimsController < Admin::BaseAdminController
     @claim = Claim.find(params[:id])
     @check = @claim.check || Check.new
     @matching_claims = Claim::MatchingAttributeFinder.new(@claim).matching_claims
+    claims_preventing_payment_finder = Claim::ClaimsPreventingPaymentFinder.new(@claim)
+    @claims_preventing_payment = claims_preventing_payment_finder.claims_preventing_payment
+    @attributes_preventing_payment = claims_preventing_payment_finder.attributes_preventing_payment
   end
 
   def search

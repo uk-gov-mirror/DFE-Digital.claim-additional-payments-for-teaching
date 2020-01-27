@@ -75,6 +75,9 @@ en:
       result: "Result"
       notes: "Notes"
       checked_by: "Checked by"
+    claims_preventing_payment_message:
+      one: This claim cannot be approved, since we will not be able to pay it in the current payroll month. This is because claim %{claim_references} from the same claimant has already been approved in the current payroll month and it has different values for %{attribute_names}.
+      other: This claim cannot be approved, since we will not be able to pay it in the current payroll month. This is because claims %{claim_references} from the same claimant have already been approved in the current payroll month and they have different values for %{attribute_names}.
   answers:
     student_loan_start_date:
       one_course:

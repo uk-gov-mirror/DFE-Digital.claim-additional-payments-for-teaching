@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog]
 - Log entries are now tagged with their deployed environment
 - Record the the time in days between submitting and approving a claim
 - Add a Rake task to update a Geckoboard dataset when a new field has been added
+- Prevent service operator from approving a claim when it is inconsistent with
+  another claim awaiting payment to the same claimant, if this would prevent us
+  from running payroll
 
 ## [Relase 046] - 2020-01-21
 
