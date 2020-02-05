@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
 
   def timeout_warning_in_minutes
-    TIMEOUT_WARNING_LENGTH_IN_MINUTES
+        TIMEOUT_WARNING_LENGTH_IN_MINUTES
   end
 
   def update_last_seen_at
