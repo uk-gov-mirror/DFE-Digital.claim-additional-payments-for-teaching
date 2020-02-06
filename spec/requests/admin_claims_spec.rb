@@ -72,6 +72,21 @@ RSpec.describe "Admin claims", type: :request do
           end
         end
       end
+
+      describe "claims#check" do
+        let(:claim) { create(:claim, :submitted, policy: policy) }
+
+        it "displays the checks for the claim" do
+          get checks_admin_claim_path(claim)
+
+          expect(response.body).to include(claim.reference)
+          expect(response.body).to include(claim.teacher_reference_number)
+          expect(response.body).to include(claim.full_name)
+          expect(response.body).to include(claim.email_address)
+          expect(response.body).to include(I18n.l(claim.submitted_at))
+          expect(response.body).to include(I18n.l(claim.check_deadline_date))
+        end
+      end
     end
   end
 
