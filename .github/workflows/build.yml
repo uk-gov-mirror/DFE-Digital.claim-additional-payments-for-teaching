@@ -1,0 +1,28 @@
+name: Build
+
+on: [push]
+
+env:
+  dockerRegistry: dfedigital
+  dockerImageName: teacher-payments-service
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to DockerHub
+        run: docker login -u $username -p $password
+        env:
+          username: ${{ secrets.docker_username }}
+          password: ${{ secrets.docker_password }}
+      - name: Build test Docker image
+        run: |
+          docker pull $dockerRegistry/$dockerImageName:cache-test-dependencies || true
+          docker pull $dockerRegistry/$dockerImageName:cache-test || true
+          docker-compose --file=docker-compose.test.yml build
+      - name: Run tests on Docker
+        run: docker-compose --file=docker-compose.test.yml run --rm test
+
+
+
