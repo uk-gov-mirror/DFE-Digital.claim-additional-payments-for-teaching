@@ -7,6 +7,6 @@ class HeartbeatJob < CronJob
   queue_as :heartbeat
 
   def perform
-    logger.info "Heartbeat job performed"
+    logger.info "Heartbeat job performed - logger level #{Rails.logger.level}"
   end
 end
