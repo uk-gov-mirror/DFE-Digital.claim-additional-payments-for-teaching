@@ -1,0 +1,19 @@
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: docker-settings
+
+stages:
+  - stage: deploy_to_development
+    displayName: Deploy to development
+    variables:
+      - group: deployment-settings
+    jobs:
+    - template: azure-deploy.template.yml
+      parameters:
+        azureSubscription: azdo.pipelines.cip.S118D.armfe1ef140-8bef-4043-b5ee-c449e6f951ef
+        resourceGroupPrefix: s118d01
+        environmentName: development
+        slackWebhookUrl: $(slackWebhookUrl)
+        buildID: $(Build.TriggeredBy.BuildId)
