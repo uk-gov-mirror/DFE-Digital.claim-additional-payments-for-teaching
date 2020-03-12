@@ -58,7 +58,7 @@ steps:
         --target=dependencies \
         .
     displayName: Build web dependencies Docker image without cache
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/release-stuff')
 
   # Build web
   - script: |
@@ -83,7 +83,7 @@ steps:
         --build-arg GIT_COMMIT_HASH=$(Build.SourceVersion) \
         .
     displayName: Build web Docker image without cache
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/release-stuff')
 
   # Push test images
   - script: |
@@ -91,13 +91,13 @@ steps:
 
       docker push $(dockerRegistry)/$(dockerImageName):cache-test-dependencies
     displayName: Push test dependencies Docker image for caching
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/release-stuff')
   - script: |
       docker tag local/dfe-teachers-payment-service:test $(dockerRegistry)/$(dockerImageName):cache-test
 
       docker push $(dockerRegistry)/$(dockerImageName):cache-test
     displayName: Push test Docker image for caching
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/release-stuff')
 
   # Push web images
   - script: |
@@ -105,7 +105,7 @@ steps:
 
       docker push $(dockerRegistry)/$(dockerImageName):cache-web-dependencies
     displayName: Push web dependencies Docker image for caching
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/release-stuff')
   - script: |
       docker tag local/dfe-teachers-payment-service:web $(dockerRegistry)/$(dockerImageName):$(Build.BuildNumber)
       docker tag local/dfe-teachers-payment-service:web $(dockerRegistry)/$(dockerImageName):latest
@@ -113,4 +113,4 @@ steps:
       docker push $(dockerRegistry)/$(dockerImageName):$(Build.BuildNumber)
       docker push $(dockerRegistry)/$(dockerImageName):latest
     displayName: Push web Docker image
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/release-stuff')
