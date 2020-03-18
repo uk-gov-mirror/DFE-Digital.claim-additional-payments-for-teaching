@@ -2,10 +2,6 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
-trigger:
-  - testing-deploy-build
-
 resources:
   pipelines:
   - pipeline: abc
@@ -13,6 +9,9 @@ resources:
     trigger:
       branches:
       - testing-deploy-build
+
+trigger:
+  - testing-deploy-build
 
 pool:
   vmImage: 'ubuntu-latest'
