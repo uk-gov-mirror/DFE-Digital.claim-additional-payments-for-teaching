@@ -6,6 +6,14 @@
 trigger:
   - testing-deploy-build
 
+resources:
+  pipelines:
+  - pipeline: abc
+    source: Y1
+    trigger:
+      branches:
+      - testing-deploy-build
+
 pool:
   vmImage: 'ubuntu-latest'
 
