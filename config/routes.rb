@@ -92,6 +92,7 @@ Rails.application.routes.draw do
       resources :payroll_gender_tasks, only: [:create], param: :name, name: "payroll_gender"
       resources :decisions, only: [:create, :new]
       resources :amendments, only: [:new, :create]
+      resources :undo_decisions, only: [:new, :create]
       get "search", on: :collection
     end
 

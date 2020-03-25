@@ -92,6 +92,26 @@ RSpec.describe "Admin claims", type: :request do
           end
         end
 
+        context "when the claim can have its decision undone" do
+          let(:claim) { create(:claim, :approved) }
+
+          it "displays a link to undo the decision" do
+            get admin_claim_path(claim)
+
+            expect(response.body).to include("Undo decision")
+          end
+        end
+
+        context "when the claim cannot have its decision undone" do
+          let(:claim) { create(:claim, :submitted) }
+
+          it "does not display a link to undo the decision" do
+            get admin_claim_path(claim)
+
+            expect(response.body).not_to include("Undo decision")
+          end
+        end
+
         context "when the claim has been amended" do
           let(:claim) { create(:claim, :submitted, teacher_reference_number: "1234567") }
           let!(:amendment) { create(:amendment, claim: claim, claim_changes: {"teacher_reference_number" => ["7654321", "1234567"]}) }

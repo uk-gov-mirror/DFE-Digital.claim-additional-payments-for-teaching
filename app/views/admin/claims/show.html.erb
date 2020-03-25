@@ -32,6 +32,7 @@
       <span class="govuk-body-m">
         <%= link_to "View tasks", admin_claim_tasks_path(claim_id: @claim.id), class: "govuk-link" %>
         <%= link_to "Amend claim", new_admin_claim_amendment_url(@claim), class: "govuk-link" if @claim.amendable? %>
+        <%= link_to "Undo decision", new_admin_claim_undo_decision_url(@claim), class: "govuk-link" if @claim.decision_undoable? %>
       </span>
     </h1>
 

@@ -5,6 +5,7 @@
     <span class="govuk-body-m">
       <%= link_to "View full claim", admin_claim_path(claim), class: "govuk-link" %>
       <%= link_to "Amend claim", new_admin_claim_amendment_url(claim), class: "govuk-link" if claim.amendable? %>
+      <%= link_to "Undo decision", new_admin_claim_undo_decision_url(@claim), class: "govuk-link" if @claim.decision_undoable? %>
     </span>
   </h1>
 </div>
