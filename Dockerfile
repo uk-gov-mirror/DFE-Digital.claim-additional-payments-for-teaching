@@ -127,7 +127,7 @@ EXPOSE 3000
 ARG GIT_COMMIT_HASH
 ENV GIT_COMMIT_HASH ${GIT_COMMIT_HASH}
 
-CMD /filebeat/filebeat -c /filebeat/filebeat.yml & bundle exec rails server
+CMD bundle exec rails server | /filebeat/filebeat -c /filebeat/filebeat.yml
 
 # ------------------------------------------------------------------------------
 # shellcheck

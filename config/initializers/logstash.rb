@@ -1,5 +1,5 @@
 if ENV["LOGSTASH_HOST"].present?
   Rails.application.configure do
-    SemanticLogger.add_appender(file_name: "log/#{Rails.env}.json", formatter: :json)
+    SemanticLogger.add_appender(io: $stdout, formatter: :json)
   end
 end

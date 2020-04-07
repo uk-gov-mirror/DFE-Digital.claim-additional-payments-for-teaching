@@ -8,12 +8,9 @@ filebeat.inputs:
 # you can use different inputs for various configurations.
 # Below are the input specific configurations.
 
-- type: log
+- type: stdin
   enabled: true
-  paths:
-    - /app/log/*.json
   encoding: utf-8
-  ignore_older: 3h
   json.keys_under_root: true
   json.add_error_key: true
 
