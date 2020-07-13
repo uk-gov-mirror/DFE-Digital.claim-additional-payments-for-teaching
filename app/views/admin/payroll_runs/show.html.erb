@@ -56,6 +56,33 @@
       <% end %>
     </dl>
   </div>
+
+  <div class="govuk-grid-column-full">
+
+    <table class="govuk-table">
+      <caption class="govuk-table__caption">Summary of claims, by service</caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Service</th>
+          <th scope="col" class="govuk-table__header">Number of claims</th>
+          <th scope="col" class="govuk-table__header">Total claim amount</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Maths and Physics</th>
+          <td class="govuk-table__cell">35</td>
+          <td class="govuk-table__cell">£70,000.00</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Student Loans</th>
+          <td class="govuk-table__cell">90</td>
+          <td class="govuk-table__cell">£85,428.90</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <% unless @payroll_run.download_triggered? %>
     <div class="govuk-grid-column-full">
       <div class="govuk-form-group">
@@ -76,7 +103,9 @@
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header">Payment ID</th>
         <th scope="col" class="govuk-table__header">Claim Reference(s)</th>
+        <th scope="col" class="govuk-table__header">Service</th>
         <th scope="col" class="govuk-table__header">Payee Name</th>
+        <th scope="col" class="govuk-table__header">Claim amount</th>
         <% unless @payroll_run.confirmation_report_uploaded? %>
           <th scope="col" class="govuk-table__header"><span class="govuk-visually-hidden">Actions</span></th>
         <% end %>
@@ -87,7 +116,9 @@
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header"><%= payment.id %></th>
           <td class="govuk-table__cell"><%= claim_references(payment) %></td>
-          <td class="govuk-table__cell"><%= payment.banking_name %></td>
+          <td class="govuk-table__cell">Maths and Physics</td>
+          <td class="govuk-table__cell">Somethingy Longnamerson</td>
+          <td class="govuk-table__cell">£930.50</td>
           <% unless @payroll_run.confirmation_report_uploaded? %>
             <td class="govuk-table__cell">
               <%= link_to remove_admin_payroll_run_payment_path(id: payment.id, payroll_run_id: payment.payroll_run.id), class: "govuk-link" do %>
