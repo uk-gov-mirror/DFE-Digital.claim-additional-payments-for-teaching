@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 
+- Add text to payment confirmation email template
+
 ## [Release 084] - 2020-09-30
 
 - Update data report request to retrieve email address and date of birth
