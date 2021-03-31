@@ -95,7 +95,13 @@ RSpec.describe Dqt::Verification::IdentityValidator do
       end
     end
 
-    context "when no match found it returns 'false'"
+    context "when no match found it returns 'false'" do
+      it "has not matched TRN and NI" do
+        claim.teacher_reference_number = 5_002_741
+        claim.national_insurance_number = "MS213906A"
+        expect(subject.identity_verified?).to be false
+      end
+    end
   end
 end
 

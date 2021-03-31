@@ -7,6 +7,7 @@ module Dqt
       end
 
       def identity_verified?
+        return false if no_match?
         return true if all_matched?
         partial_match?
       end
@@ -34,6 +35,10 @@ module Dqt
 
         # 2. NI / Name / DOB  (return false)
         return false if national_insurance_number_matched? && name_matched? & dob_matched?
+      end
+
+      def no_match?
+        !trn_matched? && !national_insurance_number_matched?
       end
 
       def trn_matched?
