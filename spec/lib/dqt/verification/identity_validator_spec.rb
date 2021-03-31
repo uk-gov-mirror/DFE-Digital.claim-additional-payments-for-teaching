@@ -3,15 +3,15 @@ require "dqt/verification/identity_validator"
 
 RSpec.describe Dqt::Verification::IdentityValidator do
 
-  let!(:claim) { build(:claim, :unverified, eligibility: build(:maths_and_physics_eligibility)) }
+  let(:claim) { build(:claim, :unverified, eligibility: build(:maths_and_physics_eligibility)) }
   let(:api_record) do
     {
       :data => [
         {
-          :teacher_reference_number=>"1000285",
-          :first_name => "David",
-          :surname => "Wayne-Smitherstone",
-          :date_of_birth => "1991-03-18 00:00:00",
+          :teacher_reference_number=>"1000000",
+          :first_name => "Jo",
+          :surname => "Bloggs",
+          :date_of_birth => "2001-03-31 00:00:00",
           :degree_codes => [],
           :national_insurance_number => "QQ100000C",
           :qts_award_date => "2021-03-23 10:54:57",
@@ -30,6 +30,7 @@ RSpec.describe Dqt::Verification::IdentityValidator do
   let(:dqt_record_struct) do
     Struct.new(
       :trn,
+      :first_name,
       :surname,
       :dob,
       :niNumber,
@@ -45,6 +46,7 @@ RSpec.describe Dqt::Verification::IdentityValidator do
   let(:dqt_record) do
     dqt_record_struct.new(
       record[:teacher_reference_number],
+      record[:first_name],
       record[:surname],
       Date.parse(record[:date_of_birth]),
       record[:national_insurance_number],
@@ -60,6 +62,14 @@ RSpec.describe Dqt::Verification::IdentityValidator do
   subject(:identity_validator) { Dqt::Verification::IdentityValidator.new(dqt_record: dqt_record, claim: claim) }
 
   it { is_expected.to be_an_instance_of Dqt::Verification::IdentityValidator }
+
+  describe '#identity_verified?' do
+    context 'when TRN and NI and NAME and DOB' do
+      it 'returns "true" when all matched' do
+        expect(subject.identity_verified?).to be true
+      end
+    end
+  end
 end
 
 __END__

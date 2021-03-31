@@ -5,6 +5,33 @@ module Dqt
         @record = dqt_record
         @claim = claim
       end
+
+      def identity_verified?
+        trn_matched? &&
+        national_insurance_number_matched? &&
+        name_matched? &&
+        dob_matched?
+      end
+
+      private
+
+      attr_reader :record, :claim
+
+      def trn_matched?
+        claim.teacher_reference_number == record.trn
+      end
+
+      def national_insurance_number_matched?
+        claim.national_insurance_number == record.niNumber
+      end
+
+      def name_matched?
+        claim.surname == record.surname && claim.first_name == record.first_name
+      end
+
+      def dob_matched?
+        claim.date_of_birth == record.dob
+      end
     end
   end
 end
