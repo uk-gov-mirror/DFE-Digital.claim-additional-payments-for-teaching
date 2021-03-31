@@ -24,16 +24,12 @@ module Dqt
       end
 
       def partial_match?
-        # 1. TRN / Name / DOB (return true)
         return true if trn_matched? && name_matched? && dob_matched?
 
-        # 3. TRN / NI / DOB   (return true)
         return true if trn_matched? && national_insurance_number_matched? && dob_matched?
 
-        # 4. TRN / NI / Name  (return true)
         return true if trn_matched? && national_insurance_number_matched? && name_matched?
 
-        # 2. NI / Name / DOB  (return false)
         return false if national_insurance_number_matched? && name_matched? & dob_matched?
       end
 
@@ -59,15 +55,3 @@ module Dqt
     end
   end
 end
-
-__END__
-
-Identity Check Fields       | Match / Partial Match                  | Identity Verified | Notes                         | Send Email |
-----------------------------+----------------------------------------+-------------------+-------------------------------+------------|
-TRN AND NI                  | No match found                         | No                | Manual verification           | Yes        |
-TRN AND NI AND Name AND DOB | All Matched                            | Yes               | No Notes entry                | No         |
-TRN AND Name AND DOB        | All Matched except NI (Partial Match)  | Yes               | NI Not found or not matched   | No         |
-NI AND Name AND DOB         | All Matched except TRN (Partial Match) | No                | TRN mismatches.               | No         |
-                                                                                         | Manual correction carried out |            |
-TRN AND NI AND DOB          | All Match Except Name (Partial match)  | Yes               | Name not matched              | No         |
-TRN AND NI AND Name         | All Match Except DOB (Partial match)   | Yes               | DOB not matched               | No         |
