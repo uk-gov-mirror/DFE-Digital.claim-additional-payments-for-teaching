@@ -7,15 +7,34 @@ module Dqt
       end
 
       def identity_verified?
-        trn_matched? &&
-        national_insurance_number_matched? &&
-        name_matched? &&
-        dob_matched?
+        return true if all_matched?
+        partial_match?
       end
 
       private
 
       attr_reader :record, :claim
+
+      def all_matched?
+        trn_matched? &&
+          national_insurance_number_matched? &&
+          name_matched? &&
+          dob_matched?
+      end
+
+      def partial_match?
+        # 1. TRN / Name / DOB (return true)
+        return true if trn_matched? && name_matched? && dob_matched?
+
+        # 3. TRN / NI / DOB   (return true)
+        return true if trn_matched? && national_insurance_number_matched? && dob_matched?
+
+        # 4. TRN / NI / Name  (return true)
+        return true if trn_matched? && national_insurance_number_matched? && name_matched?
+
+        # 2. NI / Name / DOB  (return false)
+        return false if national_insurance_number_matched? && name_matched? & dob_matched?
+      end
 
       def trn_matched?
         claim.teacher_reference_number == record.trn
