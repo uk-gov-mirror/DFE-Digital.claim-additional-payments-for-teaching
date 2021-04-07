@@ -64,9 +64,46 @@ RSpec.describe Dqt::Verification::QualificationValidator do
   it { is_expected.to be_an_instance_of Dqt::Verification::QualificationValidator }
 
   describe "#qualification_verified?" do
-    context "when match it returns 'true'" do
-      it "has matched ONLY 'qts_date'" do
-        expect(subject.qualification_verified?).to be true
+    describe "when part of TSLR journey" do
+      context "when match it returns 'true'" do
+        it "has matched ONLY 'qts_date'" do
+          expect(subject.qualification_verified?).to be true
+        end
+      end
+    end
+
+    xdescribe "when part of ECP journey" do
+      context "when partial match it returns 'false'" do
+        it "has matched ONLY 'qts_date'" do
+          expect(subject.qualification_verified?).to be true
+        end
+
+        xit "has matched ONLY 'ITT Subjects'" do
+        end
+      end
+
+      context "when matched it returns 'true'" do
+        # TODO: Move to a it_behaves
+        it "has matched on 'Mathematics'" do
+        end
+
+        it "has matched on 'Physics'" do
+        end
+
+        it "has matched on 'Chemistry'" do
+        end
+
+        it "has matched on 'French'" do
+        end
+
+        it "has matched on 'German'" do
+        end
+
+        it "has matched on 'Spanish'" do
+        end
+
+        it "has matched on 'Other modern language'" do
+        end
       end
     end
   end
