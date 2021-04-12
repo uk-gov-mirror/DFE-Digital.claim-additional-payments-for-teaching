@@ -1,23 +1,22 @@
 require "rails_helper"
 
 RSpec.describe Dqt do
-  before do
-    Dqt.configure do |config|
-      config.client.host = config_args[:client][:host]
+  describe ".configuration" do
+    it "returns same Configuration instance" do
+      expect(described_class.send(:configuration))
+        .to be_an_instance_of(described_class::Configuration)
+        .and equal(described_class.send(:configuration))
     end
   end
 
-  let(:config_args) do
-    {
-      client: {
-        host: "http://test"
-      }
-    }
-  end
+  describe ".configure" do
+    it "yields current configuration" do
+      block = proc { |config| expect(config).to equal(described_class.send(:configuration)) }
 
-  describe "#configuration.client.host" do
-    it "returns configured client host" do
-      expect(described_class.configuration.client.host).to eq(config_args[:client][:host])
+      described_class.send(
+        :configure,
+        &block
+      )
     end
   end
 end

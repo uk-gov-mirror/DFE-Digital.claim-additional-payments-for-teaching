@@ -1,32 +1,10 @@
 module Dqt
-  class << self
-    attr_reader :configuration
-
-    private
-
-    attr_writer :configuration
+  def self.configuration
+    @configuration ||= Configuration.new
   end
 
   def self.configure
-    self.configuration ||= Configuration.new
-    yield(configuration)
-  end
-
-  class Configuration
-    class Client
-      attr_accessor :headers, :host, :params, :port
-
-      def initialize
-        self.headers = {}
-        self.host = nil
-        self.params = {}
-        self.port = nil
-      end
-    end
-
-    def client
-      @client ||= Client.new
-    end
+    yield(configuration) if block_given?
   end
 end
 
@@ -36,3 +14,4 @@ require_relative "dqt/api/v1/qualified_teaching_status"
 require_relative "dqt/client"
 require_relative "dqt/client/response"
 require_relative "dqt/client/response_error"
+require_relative "dqt/configuration"
