@@ -202,3 +202,7 @@ en:
         employment: "Does the claimant’s previous and current schools match the above information from their claim?"
         student_loan_amount: "Does the claimant’s student loan amount and plan type match the information we hold about their loan?"
         matching_details: "Is this claim still valid despite having matching details with other claims?"
+  early_career_payments:
+    questions:
+      employed_as_supply_teacher: "Are you currently employed as a supply teacher?"
+      employed_directly: "Are you employed directly by your school?"
