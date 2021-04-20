@@ -16,6 +16,11 @@ RSpec.describe EarlyCareerPayments::Eligibility, type: :model do
       expect(EarlyCareerPayments::Eligibility.new.ineligible?).to eql false
     end
 
+    it "returns true when claimant is without a contract of at least one term" do
+      expect(EarlyCareerPayments::Eligibility.new(has_entire_term_contract: false).ineligible?).to eql true
+      expect(EarlyCareerPayments::Eligibility.new(has_entire_term_contract: true).ineligible?).to eql false
+    end
+
     it "returns true when the NQT acdemic year was not the year after the ITT" do
       expect(EarlyCareerPayments::Eligibility.new(nqt_in_academic_year_after_itt: false).ineligible?).to eql true
       expect(EarlyCareerPayments::Eligibility.new(nqt_in_academic_year_after_itt: true).ineligible?).to eql false
@@ -30,8 +35,14 @@ RSpec.describe EarlyCareerPayments::Eligibility, type: :model do
   end
 
   describe "validation contexts" do
+    context "when saving in the 'has_entire_term_contract' context" do
+      it "is not valid without a value for 'has_entire_term_contract'" do
+        expect(EarlyCareerPayments::Eligibility.new).not_to be_valid(:"entire-term-contract")
+      end
+    end
+
     context "when saving in the 'nqt_in_academic_year_after_itt' context" do
-      it "is not valid without a value for 'nqt_in_academic_year_after_itt" do
+      it "is not valid without a value for 'nqt_in_academic_year_after_itt'" do
         expect(EarlyCareerPayments::Eligibility.new).not_to be_valid(:"nqt-in-academic-year-after-itt")
       end
     end

@@ -11,6 +11,7 @@ module EarlyCareerPayments
   class SlugSequence
     SLUGS = [
       "nqt-in-academic-year-after-itt",
+      "entire-term-contract",
       "check-your-answers",
       "ineligible"
     ].freeze

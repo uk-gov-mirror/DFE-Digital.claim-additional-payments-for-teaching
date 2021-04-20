@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe EarlyCareerPayments::EligibilityAnswersPresenter do
   let(:eligibility_attributes) do
     {
+      has_entire_term_contract: true,
       nqt_in_academic_year_after_itt: true
     }
   end
@@ -13,6 +14,7 @@ RSpec.describe EarlyCareerPayments::EligibilityAnswersPresenter do
 
   it "returns an array of questions and answers to be presented to the user for checking" do
     expected_answers = [
+      [I18n.t("early_career_payments.questions.has_entire_term_contract"), "Yes", "entire-term-contract"],
       [I18n.t("early_career_payments.questions.nqt_in_academic_year_after_itt"), "Yes", "nqt-in-academic-year-after-itt"]
     ]
 

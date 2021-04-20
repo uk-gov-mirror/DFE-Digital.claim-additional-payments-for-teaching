@@ -25,6 +25,13 @@ RSpec.feature "Teacher Early Career Payments claims" do
     # TODO [PAGE 03] - Select the school you teach at
     # TODO [PAGE 04] - Are you currently employed as a supply teacher
     # TODO [PAGE 05] - Do you have a contract to teach at the same school
+    expect(page).to have_text(I18n.t("early_career_payments.questions.has_entire_term_contract"))
+
+    choose "Yes"
+    click_on "Continue"
+
+    expect(claim.eligibility.reload.has_entire_term_contract).to eql true
+
     # TODO [PAGE 06] - Are you employed directly by your school
     # TODO [PAGE 07] - Are you currently subject to action for poor performance
     # TODO [PAGE 08] - Are you currently subject to dsiciplinary action
