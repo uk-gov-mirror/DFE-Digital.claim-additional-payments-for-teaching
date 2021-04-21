@@ -5,12 +5,11 @@ RSpec.feature "Teacher Early Career Payments claims" do
     visit landing_page_path(EarlyCareerPayments.routing_name)
     expect(page).to have_link(href: EarlyCareerPayments.feedback_url)
 
-    # TODO [PAGE 00] - Landing (start)
+    # Landing (start)
     expect(page).to have_text(I18n.t("early_career_payments.landing_page"))
     click_on "Start Now"
 
-    # TODO - Investigate usage of new FormBuilder pattern & convert
-    # [PAGE 01] - NQT in Academic Year after ITT
+    # NQT in Academic Year after ITT
     expect(page).to have_text(I18n.t("early_career_payments.questions.nqt_in_academic_year_after_itt"))
 
     choose "Yes"
@@ -29,6 +28,13 @@ RSpec.feature "Teacher Early Career Payments claims" do
     # TODO [PAGE 07] - Are you currently subject to action for poor performance
     # TODO [PAGE 08] - Are you currently subject to dsiciplinary action
     # TODO [PAGE 09] - Did you do a postgraduate ITT course or undergraduate ITT course
+    expect(page).to have_text(I18n.t("early_career_payments.questions.postgraduate_itt_or_undergraduate_itt_course"))
+
+    choose "Postgraduate"
+    click_on "Continue"
+
+    expect(claim.eligibility.reload.pgitt_or_ugitt_course).to eq "postgraduate"
+
     # TODO [PAGE 10] - Which subject did you do your undergraduate ITT in
     # TODO [PAGE 11] - Which subject did you do your postgraduate ITT in
     # TODO [PAGE 12] - Do you teach maths now

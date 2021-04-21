@@ -20,6 +20,7 @@ module EarlyCareerPayments
     def answers
       [].tap do |a|
         a << nqt_in_academic_year_after_itt
+        a << pgitt_or_ugitt_course
       end
     end
 
@@ -30,6 +31,14 @@ module EarlyCareerPayments
         translate("early_career_payments.questions.nqt_in_academic_year_after_itt"),
         (eligibility.nqt_in_academic_year_after_itt? ? "Yes" : "No"),
         "nqt-in-academic-year-after-itt"
+      ]
+    end
+
+    def pgitt_or_ugitt_course
+      [
+        translate("early_career_payments.questions.postgraduate_itt_or_undergraduate_itt_course"),
+        translate("early_career_payments.answers.pgitt_or_ugitt_course.#{eligibility.pgitt_or_ugitt_course}"),
+        "postgraduate-itt-or-undergraduate-itt-course"
       ]
     end
   end

@@ -11,6 +11,19 @@ RSpec.describe EarlyCareerPayments::Eligibility, type: :model do
     end
   end
 
+  describe "pgitt_or_ugitt attribute" do
+    it "rejects invalid values" do
+      expect { EarlyCareerPayments::Eligibility.new(pgitt_or_ugitt_course: "non-existance") }.to raise_error(ArgumentError)
+    end
+
+    it "has handily named boolean methods for the possible values" do
+      eligiblity = EarlyCareerPayments::Eligibility.new(pgitt_or_ugitt_course: "postgraduate")
+
+      expect(eligiblity.postgraduate_itt_course?).to eq true
+      expect(eligiblity.undergraduate_itt_course?).to eq false
+    end
+  end
+
   describe "#ineligible?" do
     it "returns false when the eligiblity cannot be determined" do
       expect(EarlyCareerPayments::Eligibility.new.ineligible?).to eql false
@@ -33,6 +46,12 @@ RSpec.describe EarlyCareerPayments::Eligibility, type: :model do
     context "when saving in the 'nqt_in_academic_year_after_itt' context" do
       it "is not valid without a value for 'nqt_in_academic_year_after_itt" do
         expect(EarlyCareerPayments::Eligibility.new).not_to be_valid(:"nqt-in-academic-year-after-itt")
+      end
+    end
+
+    context "when saving in the 'pgitt_or_ugitt_course' context" do
+      it "is not valid without a value for 'pgitt_or_ugitt_course'" do
+        expect(EarlyCareerPayments::Eligibility.new).not_to be_valid(:"postgraduate-itt-or-undergraduate-itt-course")
       end
     end
   end
