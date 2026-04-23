@@ -10,19 +10,19 @@ module Journeys
       def radio_options
         [
           Option.new(
-            id: "yes",
+            id: TEACHING_QUALIFICAITON_YES,
             name: t("options.yes")
           ),
           Option.new(
-            id: "not_yet",
+            id: TEACHING_QUALIFICATION_NOT_YET,
             name: t("options.not_yet")
           ),
           Option.new(
-            id: "no_but_planned",
+            id: TEACHING_QUALIFICATION_NO_BUT_PLANNED,
             name: t("options.no_but_planned")
           ),
           Option.new(
-            id: "no_not_planned",
+            id: TEACHING_QUALIFICATION_NO_NOT_PLANNED,
             name: t("options.no_not_planned")
           )
         ]

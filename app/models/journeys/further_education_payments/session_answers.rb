@@ -58,11 +58,11 @@ module Journeys
       end
 
       def teaching_less_than_2_5_hours_per_week?
-        teaching_hours_per_week == "less_than_2_5"
+        teaching_hours_per_week == TEACHING_HOURS_LESS_THAN_TWO_POINT_5
       end
 
       def teaching_less_than_2_5_hours_per_week_next_term?
-        teaching_hours_per_week_next_term == "less_than_2_5"
+        teaching_hours_per_week_next_term == TEACHING_HOURS_LESS_THAN_TWO_POINT_5
       end
 
       def subject_to_problematic_actions?
@@ -70,7 +70,7 @@ module Journeys
       end
 
       def lacks_teacher_qualification_or_enrolment?
-        teaching_qualification == "no_not_planned"
+        teaching_qualification == TEACHING_QUALIFICATION_NO_NOT_PLANNED
       end
 
       def less_than_half_hours_teaching_fe?
@@ -114,9 +114,9 @@ module Journeys
 
       def calculate_award_amount
         case teaching_hours_per_week
-        when "more_than_12", "more_than_20"
+        when TEACHING_HOURS_MORE_THAN_12, TEACHING_HOURS_MORE_THAN_20
           school.eligible_fe_provider.max_award_amount
-        when "between_2_5_and_12"
+        when TEACHING_HOURS_BETWEEN_TWO_POINT_5_AND_12
           school.eligible_fe_provider.lower_award_amount
         else
           0

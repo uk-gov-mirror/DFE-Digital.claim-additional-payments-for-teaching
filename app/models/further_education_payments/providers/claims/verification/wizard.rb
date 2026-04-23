@@ -139,11 +139,11 @@ module FurtherEducationPayments
 
             @reachable_steps << ContractTypeForm
 
-            if eligibility.provider_verification_contract_type == "fixed_term"
+            if eligibility.provider_verification_contract_type == CONTRACT_TYPE_FIXED_TERM
               @reachable_steps << ContractCoversFullAcademicYearForm
             end
 
-            if eligibility.provider_verification_contract_type == "variable_hours" ||
+            if eligibility.provider_verification_contract_type == CONTRACT_TYPE_VARIABLE_HOURS ||
                 eligibility.provider_verification_contract_covers_full_academic_year == false
               @reachable_steps << TaughtAtLeastOneAcademicTermForm
             end

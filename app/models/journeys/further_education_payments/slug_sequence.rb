@@ -126,10 +126,10 @@ module Journeys
         array << SLUGS_HASH["contract-type"]
 
         case answers.contract_type
-        when "permanent"
+        when CONTRACT_TYPE_PERMANENT
           array << SLUGS_HASH["teaching-hours-per-week"]
           array << SLUGS_HASH["half-teaching-hours"]
-        when "fixed_term"
+        when CONTRACT_TYPE_FIXED_TERM
           array << SLUGS_HASH["fixed-term-contract"]
 
           if answers.fixed_term_full_year == false
@@ -138,7 +138,7 @@ module Journeys
 
           array << SLUGS_HASH["teaching-hours-per-week"]
           array << SLUGS_HASH["half-teaching-hours"]
-        when "variable_hours"
+        when CONTRACT_TYPE_VARIABLE_HOURS
           array << SLUGS_HASH["taught-at-least-one-term"]
 
           select_provision_form = form_for_slug(SLUGS_HASH["select-provision"])

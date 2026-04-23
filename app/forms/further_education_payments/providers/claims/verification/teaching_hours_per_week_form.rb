@@ -5,7 +5,7 @@ module FurtherEducationPayments
         class TeachingHoursPerWeekForm < BaseForm
           TEACHING_HOURS_PER_WEEK_OPTIONS = [
             Form::Option.new(
-              id: "more_than_20",
+              id: TEACHING_HOURS_MORE_THAN_20,
               name: I18n.t(
                 %w[
                   further_education_payments_provider
@@ -18,7 +18,7 @@ module FurtherEducationPayments
               )
             ),
             Form::Option.new(
-              id: "more_than_12",
+              id: TEACHING_HOURS_MORE_THAN_12,
               name: I18n.t(
                 %w[
                   further_education_payments_provider
@@ -31,7 +31,7 @@ module FurtherEducationPayments
               )
             ),
             Form::Option.new(
-              id: "between_2_5_and_12",
+              id: TEACHING_HOURS_BETWEEN_TWO_POINT_5_AND_12,
               name: I18n.t(
                 %w[
                   further_education_payments_provider
@@ -44,7 +44,7 @@ module FurtherEducationPayments
               )
             ),
             Form::Option.new(
-              id: "less_than_2_5",
+              id: TEACHING_HOURS_LESS_THAN_TWO_POINT_5,
               name: I18n.t(
                 %w[
                   further_education_payments_provider

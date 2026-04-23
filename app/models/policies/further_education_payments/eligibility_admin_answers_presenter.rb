@@ -174,7 +174,7 @@ module Policies
       end
 
       def fixed_term_full_year
-        return nil unless eligibility.contract_type == "fixed_term"
+        return nil unless eligibility.contract_type == CONTRACT_TYPE_FIXED_TERM
 
         [
           question(
@@ -270,11 +270,11 @@ module Policies
 
       def contract_type_answer
         case eligibility.contract_type
-        when "permanent"
+        when CONTRACT_TYPE_PERMANENT
           "Permanent contract (including full-time and part-time contracts)"
-        when "variable_hours"
+        when CONTRACT_TYPE_VARIABLE_HOURS
           "Variable hours contract (This includes zero hours contracts)"
-        when "fixed_term"
+        when CONTRACT_TYPE_FIXED_TERM
           "Fixed term contract"
         else
           raise "Unknown contract type: #{eligibility.contract_type}"

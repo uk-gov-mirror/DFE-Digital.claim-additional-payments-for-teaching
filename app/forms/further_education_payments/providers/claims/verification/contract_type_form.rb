@@ -20,7 +20,7 @@ module FurtherEducationPayments
           def contract_type_options
             [
               Form::Option.new(
-                id: "permanent",
+                id: CONTRACT_TYPE_PERMANENT,
                 name: t(
                   %w[
                     provider_verification_contract_type
@@ -30,7 +30,7 @@ module FurtherEducationPayments
                 )
               ),
               Form::Option.new(
-                id: "fixed_term",
+                id: CONTRACT_TYPE_FIXED_TERM,
                 name: t(
                   %w[
                     provider_verification_contract_type
@@ -40,7 +40,7 @@ module FurtherEducationPayments
                 )
               ),
               Form::Option.new(
-                id: "variable_hours",
+                id: CONTRACT_TYPE_VARIABLE_HOURS,
                 name: t(
                   %w[
                     provider_verification_contract_type

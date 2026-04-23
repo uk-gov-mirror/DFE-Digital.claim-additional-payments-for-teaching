@@ -85,6 +85,21 @@ module Policies
       start_of_academic_year - 5.years
     }
 
+    TEACHING_HOURS_LESS_THAN_TWO_POINT_5 = "less_than_2_5".freeze
+    TEACHING_HOURS_BETWEEN_TWO_POINT_5_AND_12 = "between_2_5_and_12".freeze
+    TEACHING_HOURS_MORE_THAN_12 = "more_than_12".freeze
+    TEACHING_HOURS_MORE_THAN_20 = "more_than_20".freeze
+
+    TEACHING_QUALIFICAITON_YES = "yes".freeze
+    TEACHING_QUALIFICATION_NOT_YET = "not_yet".freeze
+    TEACHING_QUALIFICATION_NO_BUT_PLANNED = "no_but_planned".freeze
+    TEACHING_QUALIFICATION_NO_NOT_PLANNED = "no_not_planned".freeze
+
+    CONTRACT_TYPE_PERMANENT = "permanent".freeze
+    CONTRACT_TYPE_FIXED_TERM = "fixed_term".freeze
+    CONTRACT_TYPE_VARIABLE_HOURS = "variable_hours".freeze
+    CONTRACT_TYPE_EMPLOYED_BY_ANOTHER_ORGANISATION = "employed_by_another_organisation".freeze
+
     def selectable_teaching_start_academic_years(current_academic_year)
       (-4..0).map { |delta| current_academic_year + delta }
     end

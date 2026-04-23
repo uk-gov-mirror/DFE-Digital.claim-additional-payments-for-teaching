@@ -5,7 +5,7 @@ module FurtherEducationPayments
         class TeachingQualificationForm < BaseForm
           TEACHING_QUALIFICATION_OPTIONS = [
             Form::Option.new(
-              id: "yes",
+              id: TEACHING_QUALIFICAITON_YES,
               name: I18n.t(
                 %w[
                   further_education_payments_provider
@@ -18,7 +18,7 @@ module FurtherEducationPayments
               )
             ),
             Form::Option.new(
-              id: "not_yet",
+              id: TEACHING_QUALIFICATION_NOT_YET,
               name: I18n.t(
                 %w[
                   further_education_payments_provider
@@ -31,7 +31,7 @@ module FurtherEducationPayments
               )
             ),
             Form::Option.new(
-              id: "no_but_planned",
+              id: TEACHING_QUALIFICATION_NO_BUT_PLANNED,
               name: I18n.t(
                 %w[
                   further_education_payments_provider
@@ -44,7 +44,7 @@ module FurtherEducationPayments
               )
             ),
             Form::Option.new(
-              id: "no_not_planned",
+              id: TEACHING_QUALIFICATION_NO_NOT_PLANNED,
               name: I18n.t(
                 %w[
                   further_education_payments_provider

@@ -14,21 +14,21 @@ module Journeys
       def radio_options
         [
           Option.new(
-            id: "permanent",
+            id: CONTRACT_TYPE_PERMANENT,
             name: t("options.permanent"),
             hint: "This includes full-time and part-time permanent contracts"
           ),
           Option.new(
-            id: "fixed_term",
+            id: CONTRACT_TYPE_FIXED_TERM,
             name: t("options.fixed_term")
           ),
           Option.new(
-            id: "variable_hours",
+            id: CONTRACT_TYPE_VARIABLE_HOURS,
             name: t("options.variable_hours"),
             hint: "This includes zero hours contracts"
           ),
           Option.new(
-            id: "employed_by_another_organisation",
+            id: CONTRACT_TYPE_EMPLOYED_BY_ANOTHER_ORGANISATION,
             name: t("options.employed_by_another_organisation", school_name: school.name),
             hint: "For example, you are employed through a subsidiary, by an agency, as a contractor or by an organisation that is subcontracting with an eligible FE provider"
           )

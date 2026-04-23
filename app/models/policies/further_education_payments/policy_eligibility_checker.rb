@@ -18,7 +18,7 @@ module Policies
           :lack_teaching_responsibilities
         elsif answers.ineligible_fe_provider? || answers.fe_provider_closed?
           :fe_provider
-        elsif answers.contract_type == "employed_by_another_organisation"
+        elsif answers.contract_type == CONTRACT_TYPE_EMPLOYED_BY_ANOTHER_ORGANISATION
           :employed_by_another_organisation
         elsif answers.taught_at_least_one_term == false
           :must_teach_at_least_one_term

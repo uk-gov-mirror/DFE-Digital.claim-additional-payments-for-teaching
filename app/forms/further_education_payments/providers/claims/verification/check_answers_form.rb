@@ -55,9 +55,9 @@ module FurtherEducationPayments
 
           def contract_type
             case provider_verification_contract_type
-            when "fixed_term" then "Fixed-term"
-            when "variable_hours" then "Variable hours"
-            when "permanent" then "Permanent"
+            when CONTRACT_TYPE_FIXED_TERM then "Fixed-term"
+            when CONTRACT_TYPE_VARIABLE_HOURS then "Variable hours"
+            when CONTRACT_TYPE_PERMANENT then "Permanent"
             when "no_direct_contract"
               "Does not currently have a direct contract of employment"
             when nil then NOT_ANSWERED

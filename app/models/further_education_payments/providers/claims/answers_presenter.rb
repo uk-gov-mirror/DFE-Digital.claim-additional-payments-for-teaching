@@ -51,7 +51,7 @@ module FurtherEducationPayments
           }
 
           case claim.eligibility.provider_verification_contract_type
-          when "fixed_term"
+          when CONTRACT_TYPE_FIXED_TERM
             array << {
               key: {
                 text: "Contract covers full academic year"
@@ -63,7 +63,7 @@ module FurtherEducationPayments
                 )
               }
             }
-          when "variable_hours"
+          when CONTRACT_TYPE_VARIABLE_HOURS
             array << {
               key: {
                 text: "Variable hours in academic year"

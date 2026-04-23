@@ -98,17 +98,17 @@ module Policies
 
       def long_term_employed?
         case contract_type
-        when "permanent"
+        when CONTRACT_TYPE_PERMANENT
           true
-        when "variable_hours"
+        when CONTRACT_TYPE_VARIABLE_HOURS
           false
-        when "fixed_term"
+        when CONTRACT_TYPE_FIXED_TERM
           !!fixed_term_full_year
         end
       end
 
       def permanent_contract?
-        contract_type == "permanent"
+        contract_type == CONTRACT_TYPE_PERMANENT
       end
 
       def verified?
@@ -222,9 +222,9 @@ module Policies
 
       def planned_to_start_qualification_but_hasnt?
         previous_year_claim.present? &&
-          previous_year_claim.eligibility.teaching_qualification == "no_but_planned" &&
+          previous_year_claim.eligibility.teaching_qualification == TEACHING_QUALIFICATION_NO_BUT_PLANNED &&
           provider_verification_teaching_qualification.present? &&
-          provider_verification_teaching_qualification == "no_but_planned"
+          provider_verification_teaching_qualification == TEACHING_QUALIFICATION_NO_BUT_PLANNED
       end
 
       def valid_reason_for_not_starting_qualification?
@@ -232,17 +232,17 @@ module Policies
       end
 
       def insufficient_teaching_hours_per_week?
-        provider_verification_teaching_hours_per_week == "less_than_2_5"
+        provider_verification_teaching_hours_per_week == TEACHING_HOURS_LESS_THAN_TWO_POINT_5
       end
 
       def teaching_hours_mismatch?
         (
-          provider_verification_teaching_hours_per_week == "between_2_5_and_12" &&
-          teaching_hours_per_week.in?(%w[more_than_20 more_than_12])
+          provider_verification_teaching_hours_per_week == TEACHING_HOURS_BETWEEN_TWO_POINT_5_AND_12 &&
+          teaching_hours_per_week.in?([TEACHING_HOURS_MORE_THAN_20, TEACHING_HOURS_MORE_THAN_12])
         ) ||
           (
-            teaching_hours_per_week == "between_2_5_and_12" &&
-            provider_verification_teaching_hours_per_week.in?(%w[more_than_12 more_than_20])
+            teaching_hours_per_week == TEACHING_HOURS_BETWEEN_TWO_POINT_5_AND_12 &&
+            provider_verification_teaching_hours_per_week.in?([TEACHING_HOURS_MORE_THAN_12, TEACHING_HOURS_MORE_THAN_20])
           )
       end
 

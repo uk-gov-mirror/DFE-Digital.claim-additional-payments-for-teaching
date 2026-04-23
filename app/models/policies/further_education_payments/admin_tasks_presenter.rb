@@ -96,7 +96,7 @@ module Policies
       end
 
       def fixed_term_full_year
-        return unless eligibility.contract_type == "fixed_term"
+        return unless eligibility.contract_type == CONTRACT_TYPE_FIXED_TERM
 
         [
           "Full academic year",
@@ -162,14 +162,14 @@ module Policies
         # The max we want to show admins is "12 or more hours"
         provider_teaching_hours_per_week =
           case eligibility.provider_verification_teaching_hours_per_week
-          when "more_than_20" then "more_than_12"
+          when TEACHING_HOURS_MORE_THAN_20 then TEACHING_HOURS_MORE_THAN_12
           else eligibility.provider_verification_teaching_hours_per_week
           end
 
         # The max we want to show admins is "12 or more hours"
         claimant_teaching_hours_per_week =
           case eligibility.teaching_hours_per_week
-          when "more_than_20" then "more_than_12"
+          when TEACHING_HOURS_MORE_THAN_20 then TEACHING_HOURS_MORE_THAN_12
           else eligibility.teaching_hours_per_week
           end
 

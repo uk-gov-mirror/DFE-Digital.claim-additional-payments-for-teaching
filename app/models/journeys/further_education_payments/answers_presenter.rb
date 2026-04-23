@@ -98,7 +98,7 @@ module Journeys
       end
 
       def fixed_term_contract
-        return nil unless answers.contract_type == "fixed_term"
+        return nil unless answers.contract_type == CONTRACT_TYPE_FIXED_TERM
 
         [
           t("further_education_payments.forms.fixed_term_contract.question", academic_year: answers.academic_year),

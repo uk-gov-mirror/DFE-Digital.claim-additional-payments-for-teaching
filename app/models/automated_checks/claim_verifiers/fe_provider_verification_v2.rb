@@ -60,7 +60,7 @@ module AutomatedChecks
       end
 
       def provider_indicates_claimant_is_interested_in_becoming_qualified?
-        eligibility.provider_verification_teaching_qualification != "no_not_planned"
+        eligibility.provider_verification_teaching_qualification != TEACHING_QUALIFICATION_NO_NOT_PLANNED
       end
 
       def failed_checks
@@ -100,7 +100,7 @@ module AutomatedChecks
           @failed_checks << "did_not_teach_full_academic_term"
         end
 
-        if eligibility.provider_verification_teaching_qualification == "no_not_planned"
+        if eligibility.provider_verification_teaching_qualification == TEACHING_QUALIFICATION_NO_NOT_PLANNED
           @failed_checks << "no_plans_for_teaching_qualification"
         end
 
