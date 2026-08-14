@@ -80,10 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var schools = [];
 
-  function resetField(e) {
-    schoolIdTarget.value = "";
-  }
-
   function getSchoolIds() {
     return schools.map(function (school) {
       return school.id;
@@ -100,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  accessibleAutocomplete({
+  var autocomplete = accessibleAutocomplete({
     element: searchContainer,
     id: searchBoxId,
     name: searchBoxName,
@@ -174,9 +170,19 @@ document.addEventListener("DOMContentLoaded", function () {
         // NOOP
       }
     }
-  })
+  });
 
-  var accessibleAutocompleteSearchBox = document.getElementById(searchBoxId);
-  accessibleAutocompleteSearchBox.addEventListener("input", resetField);
+  var autocompleteInput = document.getElementById(searchBoxId);
+
+  if (autocompleteInput) {
+    autocompleteInput.addEventListener("input", function (event) {
+      var currentValue = (event.target.value || "").trim();
+      var selectedSchool = findSchool(schoolIdTarget.value);
+
+      if (schoolIdTarget.value && (!selectedSchool || currentValue !== selectedSchool.name)) {
+        schoolIdTarget.value = "";
+      }
+    });
+  }
 });
 

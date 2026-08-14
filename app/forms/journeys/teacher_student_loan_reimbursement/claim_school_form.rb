@@ -16,15 +16,24 @@ module Journeys
       def save
         return if invalid? || no_results?
 
-        if possible_claim_school_id.present? && changed_possible_school?
-          journey_session.answers.assign_attributes(
-            claim_school_id: nil,
-            possible_claim_school_id:
-          )
-          reset_dependent_answers
-        end
+        if possible_claim_school_id.present?
+          selected_school = School.find_by(id: possible_claim_school_id)
 
-        if changed_query?
+          if changed_query? && (selected_school.blank? || provision_search.to_s.strip != selected_school.name.to_s)
+            journey_session.answers.assign_attributes(
+              claim_school_id: nil,
+              possible_claim_school_id: nil,
+              provision_search:
+            )
+            reset_dependent_answers
+          elsif changed_possible_school? || changed_query?
+            journey_session.answers.assign_attributes(
+              claim_school_id: possible_claim_school_id,
+              possible_claim_school_id: possible_claim_school_id
+            )
+            reset_dependent_answers
+          end
+        elsif changed_query?
           journey_session.answers.assign_attributes(
             claim_school_id: nil,
             possible_claim_school_id: nil,

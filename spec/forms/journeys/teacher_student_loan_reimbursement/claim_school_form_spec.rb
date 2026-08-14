@@ -43,7 +43,57 @@ RSpec.describe Journeys::TeacherStudentLoanReimbursement::ClaimSchoolForm do
         it "updates the claim_school on claim eligibility" do
           expect(form.save).to be true
 
+          expect(journey_session.reload.answers.claim_school_id).to eq school.id
           expect(journey_session.reload.answers.possible_claim_school_id).to eq school.id
+        end
+      end
+
+      context "when a user searches for a school and then selects a result" do
+        let(:school) { create(:school, :eligible_for_journey, journey: journey, name: "Penistone Grammar School") }
+
+        let(:params) do
+          ActionController::Parameters.new(
+            {
+              slug: slug,
+              claim: {
+                provision_search: school.name,
+                possible_claim_school_id: school.id
+              }
+            }
+          )
+        end
+
+        it "keeps the selected result as the claim school" do
+          expect(form.save).to be true
+
+          expect(journey_session.reload.answers.claim_school_id).to eq school.id
+          expect(journey_session.reload.answers.possible_claim_school_id).to eq school.id
+        end
+      end
+
+      context "when a user edits the search after selecting a school" do
+        let(:school) { create(:school, :student_loans_eligible) }
+        let(:new_school) { create(:school, :student_loans_eligible) }
+        let(:existing_claim_school_id) { school.id }
+
+        let(:params) do
+          ActionController::Parameters.new(
+            {
+              slug: slug,
+              claim: {
+                provision_search: new_school.name,
+                possible_claim_school_id: school.id
+              }
+            }
+          )
+        end
+
+        it "clears the stale selected school until a new result is chosen" do
+          expect(form.save).to be true
+
+          expect(journey_session.reload.answers.claim_school_id).to be_nil
+          expect(journey_session.reload.answers.possible_claim_school_id).to be_nil
+          expect(journey_session.reload.answers.provision_search).to eq new_school.name
         end
       end
     end

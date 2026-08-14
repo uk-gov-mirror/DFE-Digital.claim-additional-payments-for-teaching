@@ -7,7 +7,7 @@ RSpec.feature "Teacher Student Loan Repayments claims" do
   let!(:school) { create(:school, :student_loans_eligible) }
   let(:imported_slc_data) { create(:student_loans_data, nino: "PX321499A", date_of_birth: "28/2/1988", plan_type_of_deduction: 1, amount: 1_100) }
 
-  def answer_eligibility_questions_and_fill_in_personal_details
+  def answer_eligibility_questions_and_fill_in_personal_details(javascript_enabled: false)
     visit new_claim_path(Journeys::TeacherStudentLoanReimbursement.routing_name)
 
     skip_tid
@@ -29,7 +29,12 @@ RSpec.feature "Teacher Student Loan Repayments claims" do
 
     expect(page).to have_text(claim_school_question)
 
-    choose_school school
+    if javascript_enabled
+      choose_school_js(school)
+    else
+      choose_school(school)
+    end
+
     expect(session.reload.answers.claim_school).to eql school
     expect(page).to have_text(subjects_taught_question(school_name: school.name))
 
@@ -198,7 +203,7 @@ RSpec.feature "Teacher Student Loan Repayments claims" do
     scenario "Teacher claims back student loan repayments with javascript #{js_status} (SLC data present)", js: javascript_enabled do
       imported_slc_data
 
-      answer_eligibility_questions_and_fill_in_personal_details
+      answer_eligibility_questions_and_fill_in_personal_details(javascript_enabled: javascript_enabled)
 
       # - Student loan amount details
       expect(page).to have_title(I18n.t("student_loans.questions.student_loan_amount"))
@@ -218,7 +223,7 @@ RSpec.feature "Teacher Student Loan Repayments claims" do
     end
 
     scenario "Teacher claims back student loan repayments with javascript #{js_status} (no SLC data present)", js: javascript_enabled, flaky: true do
-      answer_eligibility_questions_and_fill_in_personal_details
+      answer_eligibility_questions_and_fill_in_personal_details(javascript_enabled: javascript_enabled)
 
       # - Student loan amount details
       expect(page).to have_title(I18n.t("student_loans.questions.student_loan_amount"))

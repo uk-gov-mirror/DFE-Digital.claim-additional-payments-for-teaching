@@ -13,8 +13,10 @@ RSpec.describe Journeys::TeacherStudentLoanReimbursement do
     end
 
     context "with no journey configuration record" do
-      it "raises an exception" do
-        expect { described_class.configuration }.to raise_error(ActiveRecord::RecordNotFound)
+      it "creates a configuration record" do
+        described_class.configuration
+
+        expect(described_class.configuration).to be_present
       end
     end
   end
