@@ -387,6 +387,91 @@ RSpec.describe Policies::DataRetention::PoliciesJob do
         end
       end
     end
+
+    context "recovery records" do
+      it "creates a recovery record for each claim that is redacted" do
+        rejected_claim = create_claim_with_all_attributes
+        create(
+          :decision,
+          :rejected,
+          claim: rejected_claim,
+          created_at: DateTime.new(2024, 10, 15)
+        )
+        rejected_amendment = create_amendment_for(rejected_claim)
+
+        paid_claim = create_claim_with_all_attributes
+        create(:decision, :approved, claim: paid_claim)
+        create(
+          :payment,
+          :confirmed,
+          :with_figures,
+          claims: [paid_claim],
+          scheduled_payment_date: Date.new(2024, 10, 15)
+        )
+
+        unchanged_claim = create_claim_with_all_attributes
+        create(
+          :decision,
+          :rejected,
+          claim: unchanged_claim,
+          created_at: DateTime.new(2025, 10, 15)
+        )
+
+        travel_to(job_run_date) do
+          perform_enqueued_jobs { described_class.perform_now }
+        end
+
+        recoveries = Policies::DataRetention::Recovery.order(:claim_id)
+
+        expect(recoveries.pluck(:claim_id)).to match_array([
+          rejected_claim.id,
+          paid_claim.id
+        ])
+
+        rejected_recovery = recoveries.find_by!(claim: rejected_claim)
+
+        expect(rejected_recovery.destroy_at).to(
+          be_within(1.second).of(job_run_date.in_time_zone + 1.week)
+        )
+
+        expect(rejected_recovery.payload).to include(
+          "claim_attributes" => include(
+            "id" => rejected_claim.id,
+            "first_name" => "John"
+          ),
+          "eligibility_attributes" => include(
+            "id" => rejected_claim.eligibility.id,
+            "teacher_reference_number" => "1234567"
+          ),
+          "amendments_attributes" => [
+            include(
+              "id" => rejected_amendment.id,
+              "claim_changes" => include(
+                "date_of_birth" => ["1985-06-15", "1990-01-01"]
+              )
+            )
+          ]
+        )
+
+        paid_recovery = recoveries.find_by!(claim: paid_claim)
+
+        expect(paid_recovery.destroy_at).to(
+          be_within(1.second).of(job_run_date.in_time_zone + 1.week)
+        )
+
+        expect(paid_recovery.payload).to include(
+          "claim_attributes" => include(
+            "id" => paid_claim.id,
+            "first_name" => "John"
+          ),
+          "eligibility_attributes" => include(
+            "id" => paid_claim.eligibility.id,
+            "teacher_reference_number" => "1234567"
+          ),
+          "amendments_attributes" => []
+        )
+      end
+    end
   end
 
   context "when the policy is FurtherEducationPayments" do
